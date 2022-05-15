@@ -8,6 +8,12 @@ const props = defineProps({
     width: {
         default: '48'
     },
+		active: {
+				default: false
+		},
+		mainMenu: {
+				default: false
+		},
     contentClasses: {
         default: () => ['py-1', 'bg-white']
     }
@@ -38,11 +44,20 @@ const alignmentClasses = computed(() => {
     }
 });
 
+const menuClass = computed(() => {
+	if (props.mainMenu == true) {
+		return "py-2 border-b-2";
+	} else {
+		return "";
+	}
+});
+
 const open = ref(false);
+
 </script>
 
 <template>
-    <div class="relative">
+    <div class="relative" :class="menuClass">
         <div @click="open = ! open">
             <slot name="trigger" />
         </div>

@@ -16,7 +16,7 @@ const showingNavigationDropdown = ref(false);
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
+                    <div class="flex justify-between h-10">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
@@ -30,6 +30,29 @@ const showingNavigationDropdown = ref(false);
                                 <BreezeNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </BreezeNavLink>
+                            </div>
+                            <!-- Navigation Links -->
+                            <div class="ml-3 relative flex items-center">
+                                <!-- <BreezeDropdown align="left" width="48" class="py-2 border-b-2" :mainMenu="1"> -->
+                                <BreezeDropdown align="left" width="48" :mainMenu="true">
+                                    <template #trigger>
+                                        <span class="inline-flex align-bottom rounded-md">
+                                            <button type="button" class="inline-flex text-sm font-medium text-gray-900">
+                                                {{ "Authors" }}
+
+                                                <svg class="ml-2 -mr-0.5 h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </template>
+
+                                    <template #content>
+                                        <BreezeDropdownLink href="/authors/create" method="get" as="button">
+                                            New
+                                        </BreezeDropdownLink>
+                                    </template>
+                                </BreezeDropdown>
                             </div>
                         </div>
 
