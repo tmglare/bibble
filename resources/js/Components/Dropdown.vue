@@ -52,12 +52,20 @@ const menuClass = computed(() => {
 	}
 });
 
+const activeClass = computed(() => {
+	if (props.active == true) {
+		return "border-indigo-400 focus:border-indigo-700";
+	} else {
+		return "";
+	}
+});
+
 const open = ref(false);
 
 </script>
 
 <template>
-    <div class="relative" :class="menuClass">
+    <div class="relative" :class="[menuClass,activeClass]">
         <div @click="open = ! open">
             <slot name="trigger" />
         </div>

@@ -15,7 +15,8 @@ const showingNavigationDropdown = ref(false);
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> -->
+                <div class="mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-10">
                         <div class="flex">
                             <!-- Logo -->
@@ -34,7 +35,12 @@ const showingNavigationDropdown = ref(false);
                             <!-- Navigation Links -->
                             <div class="ml-3 relative flex items-center">
                                 <!-- <BreezeDropdown align="left" width="48" class="py-2 border-b-2" :mainMenu="1"> -->
-                                <BreezeDropdown align="left" width="48" :mainMenu="true">
+                                <BreezeDropdown
+																	align="left"
+																	width="48"
+																	:mainMenu="true"
+																	:active="route().current('authors.*')"
+																>
                                     <template #trigger>
                                         <span class="inline-flex align-bottom rounded-md">
                                             <button type="button" class="inline-flex text-sm font-medium text-gray-900">
@@ -48,6 +54,9 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        <BreezeDropdownLink href="/authors" method="get" as="button">
+                                            Index
+                                        </BreezeDropdownLink>
                                         <BreezeDropdownLink href="/authors/create" method="get" as="button">
                                             New
                                         </BreezeDropdownLink>
@@ -119,7 +128,8 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Heading -->
             <header class="bg-white shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <!-- <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8"> -->
+                <div class="mx-auto py-2 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>

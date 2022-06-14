@@ -17,7 +17,13 @@ class AuthorController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function index() {
-	//
+		$authors = $this->author->orderBy("name")->paginate(10);
+
+		return Inertia::render(
+			"Author/AuthorIndex",
+			array("authors" => $authors)
+		);
+			
 	}
 
 	/**
@@ -27,7 +33,6 @@ class AuthorController extends Controller {
 	*/
 	public function create() {
 		$author = new $this->author;
-		$author->name = "Dickens";
 
 		return Inertia::render(
 			"Author/AuthorCreate",
@@ -42,7 +47,18 @@ class AuthorController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function store(Request $request) {
-	//
+		$this->validate(
+			$request,
+			array(
+				"name" => "required"
+			)
+		);
+
+		$data = $request->all();
+
+		$author = $this->author->create($data);
+
+		return redirect()->action("App\Http\Controllers\AuthorController@show",$author->id);
 	}
 
 	/**
@@ -52,7 +68,16 @@ class AuthorController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function show($id) {
-	//
+		try {
+			$author = $this->author->findOrFail($id);
+		} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			return redirect()->back()->withErrors(__("Author cannot be found"));
+		}
+
+		return Inertia::render(
+			"Author/AuthorShow",
+			array("author" => $author)
+		);
 	}
 
 	/**
