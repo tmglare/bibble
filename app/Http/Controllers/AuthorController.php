@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Author;
 use Inertia\Inertia;
+use PDF;
 
 class AuthorController extends Controller {
 	public function __construct(Author $author) {
@@ -17,7 +18,7 @@ class AuthorController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function index() {
-		$authors = $this->author->orderBy("name")->paginate(10);
+		$authors = $this->author->withTrashed()->orderBy("name")->paginate(10);
 
 		return Inertia::render(
 			"Author/AuthorIndex",
@@ -87,7 +88,16 @@ class AuthorController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function edit($id) {
-	//
+		try {
+			$author = $this->author->findOrFail($id);
+		} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			return redirect()->back()->withErrors(__("Author cannot be found"));
+		}
+
+		return Inertia::render(
+			"Author/AuthorEdit",
+			array("author" => $author)
+		);
 	}
 
 	/**
@@ -98,7 +108,19 @@ class AuthorController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function update(Request $request, $id) {
-	//
+		$this->validate(
+			$request,
+			array(
+				"name" => "required"
+			)
+		);
+
+		$data = $request->all();
+		$author = $this->author->findOrFail($id);
+
+		$author->fill($data)->save();
+
+		return redirect()->action("App\Http\Controllers\AuthorController@show",$id);
 	}
 
 	/**
@@ -108,6 +130,25 @@ class AuthorController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function destroy($id) {
-	//
+		$author = $this->author->withTrashed()->find($id);
+		if ($author->trashed()) {
+			$author->forceDelete();
+		} else {
+			$author->delete();
+		}
+		return redirect()->action("App\Http\Controllers\AuthorController@index");
+	}
+
+	public function downloadPDF($id) {
+		$author = $this->author->find($id);
+
+		$pdf = PDF::loadView('pdf',array("author" => $author));
+		return $pdf->download("author.pdf");
+	}
+
+	public function reinstate($id) {
+		$author = $this->author->withTrashed()->find($id);
+		$author->restore();
+		return redirect()->action("App\Http\Controllers\AuthorController@index");
 	}
 }

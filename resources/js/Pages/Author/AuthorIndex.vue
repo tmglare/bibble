@@ -5,8 +5,12 @@
 	import Button from '@/Components/Button.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
+
 	import { computed } from 'vue';
 	import { ref } from 'vue';
+	import { reactive } from 'vue';
+
+	import { Inertia } from '@inertiajs/inertia';
 
 	const props = defineProps({
 			errors: Object,
@@ -14,6 +18,25 @@
 	});
 
 	const zebra = "even:bg-gray-200 odd:bg-gray-100";
+
+	const author = reactive({name:"abc"});
+
+	const archived = (deletedAt) => {
+		if ((! deletedAt) || deletedAt == "null") {
+			return `${zebra} text-gray-800`;
+		} else {
+			return `${zebra} text-gray-400`;
+		}
+	}
+
+	const deleteRecord = (id,name) => {
+		if (! confirm(`Do you wish to delete author ${name}?`)) return false;
+		Inertia.delete(`/authors/${id}`);
+	}
+
+	const reinstateRecord = (id) => {
+		Inertia.get(`/authors/${id}/reinstate`);
+	}
 </script>
 
 <template>
@@ -34,14 +57,26 @@
 					<table class="w-full">
 					<tr>
 						<th></th>
+						<th></th>
+						<th></th>
 						<th class="text-left text-gray-600">Name</th>
 					</tr>
 					<tr
 						v-for="(author,key) in authors.data"
-						v-bind:class="zebra"
+						v-bind:class="archived(`${author.deleted_at}`)"
 					>
 						<td>
-							<Link :href="`/authors/${author.id}`" method="get">View</Link>
+							<Link class="font-semibold text-blue-600 hover:underline" :href="`/authors/${author.id}`" method="get">View</Link>
+						</td>
+						<td>
+							<form v-on:submit.prevent="deleteRecord(`${author.id}`,`${author.name}`)">
+								<button type="submit" class="text-red-600 hover:underline">Delete</button>
+							</form>
+						</td>
+						<td>
+							<form v-if="author.deleted_at" v-on:submit.prevent="reinstateRecord(`${author.id}`)">
+								<button type="submit" class="text-green-600 hover:underline">Re-instate</button>
+							</form>
 						</td>
 						<td class="text-left">{{ author.name }}</td>
 					</tr>
