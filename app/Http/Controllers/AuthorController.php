@@ -24,7 +24,6 @@ class AuthorController extends Controller {
 			"Author/AuthorIndex",
 			array("authors" => $authors)
 		);
-			
 	}
 
 	/**
@@ -131,10 +130,17 @@ class AuthorController extends Controller {
 	*/
 	public function destroy($id) {
 		$author = $this->author->withTrashed()->find($id);
-		if ($author->trashed()) {
-			$author->forceDelete();
-		} else {
-			$author->delete();
+		try {
+			if ($author->trashed()) {
+				if ($author->books()->count() > 0) {
+					return redirect()->back()->withErrors(__("Cannot delete due to linked data"));
+				}
+				$author->forceDelete();
+			} else {
+				$author->delete();
+			}
+		} catch (\Illuminate\Database\QueryException $e) {
+			return redirect()->back()->withErrors($e->getmessage());
 		}
 		return redirect()->action("App\Http\Controllers\AuthorController@index");
 	}

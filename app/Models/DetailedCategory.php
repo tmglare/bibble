@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Author extends Model {
+class DetailedCategory extends Model {
 	use HasFactory;
 	use SoftDeletes;
 
@@ -22,14 +22,15 @@ class Author extends Model {
 	);
 
 	protected $fillable = array(
-		"name"
+		"name",
+		"general_category_id"
 	);
 
 	protected $casts = array(
 		"name" => "string"
 	);
 
-	public function books() {
-		return $this->hasMany("\App\Models\Book");
+	public function generalCategory() {
+		return $this->belongsTo("\App\Models\GeneralCategory");
 	}
 }

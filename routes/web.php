@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\GeneralCategoryController;
+use App\Http\Controllers\DetailedCategoryController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowerController;
+use App\Http\Controllers\InventoryItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +41,16 @@ Route::group(
 		Route::resource("authors",AuthorController::class);
 		Route::get("authors/{id}/reinstate",array(AuthorController::class,"reinstate"));
 		Route::get("downloadPDF/{id}",array(AuthorController::class,'downloadPDF'));
+		Route::resource("generalCategories",GeneralCategoryController::class);
+		Route::get("generalCategories/{id}/reinstate",array(GeneralCategoryController::class,"reinstate"));
+		Route::resource("detailedCategories",DetailedCategoryController::class);
+		Route::get("detailedCategories/{id}/reinstate",array(DetailedCategoryController::class,"reinstate"));
+		Route::resource("books",BookController::class);
+		Route::get("books/{id}/reinstate",array(BookController::class,"reinstate"));
+		Route::resource("borrowers",BorrowerController::class);
+		Route::get("borrowers/{id}/reinstate",array(BorrowerController::class,"reinstate"));
+		Route::resource("inventoryItems",InventoryItemController::class);
+		Route::get("inventoryItems/{id}/reinstate",array(InventoryItemController::class,"reinstate"));
 	}
 );
 

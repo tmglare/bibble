@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Author extends Model {
+class InventoryItem extends Model {
 	use HasFactory;
 	use SoftDeletes;
 
@@ -22,14 +22,17 @@ class Author extends Model {
 	);
 
 	protected $fillable = array(
-		"name"
+		"book_id",
+		"copy_no",
+		"notes"
 	);
 
 	protected $casts = array(
-		"name" => "string"
+		"copy_no" => "integer",
+		"notes"   => "string"
 	);
 
-	public function books() {
-		return $this->hasMany("\App\Models\Book");
+	public function book() {
+		return $this->belongsTo("\App\Models\Book");
 	}
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Author extends Model {
+class GeneralCategory extends Model {
 	use HasFactory;
 	use SoftDeletes;
 
@@ -29,7 +29,7 @@ class Author extends Model {
 		"name" => "string"
 	);
 
-	public function books() {
-		return $this->hasMany("\App\Models\Book");
+	public function detailedCategories() {
+		return $this->hasMany("\App\Models\DetailedCategory");
 	}
 }
