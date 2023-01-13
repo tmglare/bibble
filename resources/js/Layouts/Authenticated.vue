@@ -142,7 +142,7 @@ const showingNavigationDropdown = ref(false);
                                     <template #trigger>
                                         <span class="inline-flex align-bottom rounded-md">
                                             <button type="button" class="inline-flex text-sm font-medium text-gray-900">
-                                                {{ "Borrowers" }}
+                                                {{ "Borrowers/Loans" }}
 
                                                 <svg class="ml-2 -mr-0.5 h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -157,6 +157,12 @@ const showingNavigationDropdown = ref(false);
                                         </BreezeDropdownLink>
                                         <BreezeDropdownLink href="/borrowers/create" method="get" as="button">
                                             New Borrower
+                                        </BreezeDropdownLink>
+                                        <BreezeDropdownLink href="/loans" method="get" as="button">
+                                            Loan Index
+                                        </BreezeDropdownLink>
+                                        <BreezeDropdownLink href="/loans/create" method="get" as="button">
+                                            New Loan
                                         </BreezeDropdownLink>
                                     </template>
                                 </BreezeDropdown>

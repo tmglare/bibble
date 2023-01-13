@@ -135,6 +135,7 @@
 					<Link :href="`/borrowers/${borrower.id}/edit`" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">Edit</Link>
 					<Link href="/borrowers" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">Index</Link>
 					<Link href="/borrowers/create" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">New</Link>
+					<Link :href="`/loans?borrowerId=${borrower.id}`" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">Loans</Link>
 				</div>
 
 			</div>

@@ -19,7 +19,7 @@ class BookController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function index() {
-		$books = $this->book->with("detailedCategory","author")->withTrashed()->orderBy("title")->paginate(10);
+		$books = $this->book->withTrashed()->with("detailedCategory","author")->orderBy("title")->paginate(10);
 
 		return Inertia::render(
 			"Book/BookIndex",
@@ -107,7 +107,7 @@ class BookController extends Controller {
 		}
 
 		$detailedCategories = DetailedCategory::orderBy("name") ->get()->pluck("name","id")->toArray();
-		$authors            = Author::orderBy("name") ->get()->pluck("name","id")->toArray();
+		$authors            = Author::withTrashed()->orderBy("name") ->get()->pluck("name","id")->toArray();
 
 		return Inertia::render(
 			"Book/BookEdit",

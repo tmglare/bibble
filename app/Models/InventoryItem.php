@@ -35,4 +35,8 @@ class InventoryItem extends Model {
 	public function book() {
 		return $this->belongsTo("\App\Models\Book");
 	}
+
+	public function loans() {
+		return $this->hasMany("\App\Models\Loan");
+	}
 }

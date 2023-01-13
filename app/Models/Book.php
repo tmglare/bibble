@@ -42,7 +42,7 @@ class Book extends Model {
 	);
 
 	public function author() {
-		return $this->belongsTo("\App\Models\Author");
+		return $this->belongsTo("\App\Models\Author")->withTrashed();
 	}
 
 	public function detailedCategory() {

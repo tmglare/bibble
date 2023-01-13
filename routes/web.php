@@ -10,6 +10,7 @@ use App\Http\Controllers\DetailedCategoryController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowerController;
 use App\Http\Controllers\InventoryItemController;
+use App\Http\Controllers\LoanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,7 @@ Route::group(
 		Route::get("borrowers/{id}/reinstate",array(BorrowerController::class,"reinstate"));
 		Route::resource("inventoryItems",InventoryItemController::class);
 		Route::get("inventoryItems/{id}/reinstate",array(InventoryItemController::class,"reinstate"));
+		Route::resource("loans",LoanController::class);
 	}
 );
 
