@@ -19,7 +19,8 @@
 		town:      props.borrower.town,
 		postcode:  props.borrower.postcode,
 		telephone: props.borrower.telephone,
-		email:     props.borrower.email
+		email:     props.borrower.email,
+		barcode:   props.borrower.barcode
 	});
 </script>
 
@@ -127,6 +128,19 @@
 						/>
 						<div class="bg-red-200">
 							{{ errors.email }}
+						</div>
+					</div>
+
+					<div>
+						<Label value="Barcode"/>
+						<Input
+							id="barcode"
+							v-model="form.barcode"
+							class="w-3/4 border-2"
+							disabled
+						/>
+						<div class="bg-red-200">
+							{{ errors.barcode }}
 						</div>
 					</div>
 				</form>

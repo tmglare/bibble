@@ -24,12 +24,14 @@ class InventoryItem extends Model {
 	protected $fillable = array(
 		"book_id",
 		"copy_no",
-		"notes"
+		"notes",
+		"barcode"
 	);
 
 	protected $casts = array(
 		"copy_no" => "integer",
-		"notes"   => "string"
+		"notes"   => "string",
+		"barcode" => "string"
 	);
 
 	public function book() {

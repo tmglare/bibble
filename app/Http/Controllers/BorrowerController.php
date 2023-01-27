@@ -59,7 +59,16 @@ class BorrowerController extends Controller {
 			)
 		);
 
+		$maxBarcode = $this->borrower->max("barcode");
+
+		if (! $maxBarcode) {
+			$maxBarcode = "B1000";
+		}
+
+		$newBarcode = ++$maxBarcode;
+
 		$data = $request->all();
+		$data["barcode"] = $newBarcode;
 
 		$borrower = $this->borrower->create($data);
 
@@ -118,12 +127,25 @@ class BorrowerController extends Controller {
 				"name"     => "required",
 				"street"   => "required",
 				"town"     => "required",
-				"postcode" => "required"
+				"postcode" => "required",
+				"barcode"  => "nullable|unique:borrowers,barcode,$id"
 			)
 		);
 
 		$data = $request->all();
 		$borrower = $this->borrower->findOrFail($id);
+
+		if (! $borrower->barcode) {
+			$maxBarcode = $this->borrower->max("barcode");
+
+			if (! $maxBarcode) {
+				$maxBarcode = "B1000";
+			}
+
+			$newBarcode = ++$maxBarcode;
+
+			$data["barcode"] = $newBarcode;
+		}
 
 		$borrower->fill($data)->save();
 

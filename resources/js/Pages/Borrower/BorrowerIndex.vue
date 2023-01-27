@@ -60,6 +60,7 @@
 						<th class="text-left text-gray-600">Postcode</th>
 						<th class="text-left text-gray-600">Telephone</th>
 						<th class="text-left text-gray-600">Email</th>
+						<th class="text-left text-gray-600">Barcode</th>
 					</tr>
 					<tr
 						v-for="(borrower,key) in borrowers.data"
@@ -85,6 +86,7 @@
 						<td class="text-left">{{ borrower.postcode }}</td>
 						<td class="text-left">{{ borrower.telephone }}</td>
 						<td class="text-left">{{ borrower.email }}</td>
+						<td class="text-left">{{ borrower.barcode }}</td>
 					</tr>
 				</table>
 			</div>

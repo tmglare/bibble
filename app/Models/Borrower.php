@@ -28,7 +28,8 @@ class Borrower extends Model {
 		"town",
 		"postcode",
 		"telephone",
-		"email"
+		"email",
+		"barcode"
 	);
 
 	protected $casts = array(
@@ -38,7 +39,8 @@ class Borrower extends Model {
 		"town"      => "string",
 		"postcode"  => "string",
 		"telephone" => "string",
-		"email"     => "string"
+		"email"     => "string",
+		"barcode"   => "string"
 	);
 
 	public function setTownAttribute($value) {

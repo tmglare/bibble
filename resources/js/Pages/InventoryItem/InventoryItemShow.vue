@@ -17,7 +17,8 @@
 		title:                  props.inventoryItem.book.title,
 		author:                 props.inventoryItem.book.author.name,
 		detailedCategory:       props.inventoryItem.book.detailed_category.name,
-		copyNo:                 props.inventoryItem.copy_no
+		copyNo:                 props.inventoryItem.copy_no,
+		barcode:                props.inventoryItem.barcode
 	});
 </script>
 
@@ -79,6 +80,19 @@
 						/>
 						<div class="bg-red-200">
 							{{ errors.copy_no }}
+						</div>
+					</div>
+
+					<div>
+						<Label value="Barcode"/>
+						<Input
+							id="barcode"
+							v-model="form.barcode"
+							class="w-3/4 border-2"
+							disabled
+						/>
+						<div class="bg-red-200">
+							{{ errors.barcode }}
 						</div>
 					</div>
 				</form>

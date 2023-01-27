@@ -68,7 +68,16 @@ class InventoryItemController extends Controller {
 			)
 		);
 
+		$maxBarcode = $this->inventoryItem->max("barcode");
+
+		if (! $maxBarcode) {
+			$maxBarcode = "T1000";
+		}
+
+		$newBarcode = ++$maxBarcode;
+
 		$data = $request->all();
+		$data["barcode"] = $newBarcode;
 
 		$book = $this->inventoryItem->create($data);
 
@@ -134,12 +143,25 @@ class InventoryItemController extends Controller {
 								where("id","!=",$id);
 						}
 					)
-				)
+				),
+				"barcode"  => "nullable|unique:inventory_items,barcode,$id"
 			)
 		);
 
 		$data = $request->all();
 		$inventoryItem = $this->inventoryItem->findOrFail($id);
+
+		if (! $inventoryItem->barcode) {
+			$maxBarcode = $this->inventoryItem->max("barcode");
+
+			if (! $maxBarcode) {
+				$maxBarcode = "T1000";
+			}
+
+			$newBarcode = ++$maxBarcode;
+
+			$data["barcode"] = $newBarcode;
+		}
 
 		$inventoryItem->fill($data)->save();
 

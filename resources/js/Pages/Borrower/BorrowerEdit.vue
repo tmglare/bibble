@@ -3,6 +3,7 @@
 	import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 	import Label from '@/Components/Label.vue';
 	import Input from '@/Components/Input.vue';
+	import Errors from '@/Components/Errors.vue';
 	import Button from '@/Components/Button.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
@@ -19,17 +20,18 @@
 		town:      props.borrower.town,
 		postcode:  props.borrower.postcode,
 		telephone: props.borrower.telephone,
-		email:     props.borrower.email
+		email:     props.borrower.email,
+		barcode:   props.borrower.barcode
 	});
 </script>
 
 <template>
-	<Head title="Show borrower" />
+	<Head title="Edit borrower" />
 
 	<BreezeAuthenticatedLayout>
 		<template #header>
 			<h2 class="font-semibold text-xl text-gray-800 leading-tight">
-				Show Borrower
+				Edit Borrower
 			</h2>
 		</template>
 
@@ -127,6 +129,17 @@
 						</div>
 					</div>
 
+					<div>
+						<Label value="Barcode"/>
+						<Input
+							id="barcode"
+							v-model="form.barcode"
+							class="w-3/4 border-2"
+						/>
+						<div class="bg-red-200">
+							{{ errors.barcode }}
+						</div>
+					</div>
 					<div class="mt-2">
 						<Button class="text-gray-800 bg-green-400 hover:bg-green-500  active:bg-green-500  focus:bg-green-500 ml-2">
 							Save

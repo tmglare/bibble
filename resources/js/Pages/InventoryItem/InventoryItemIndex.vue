@@ -46,7 +46,7 @@
 	</template>
 
 	<div class="flex flex-col justify-center items-left pt-6 px-6 sm:pt-0 bg-gray-100">
-		<div class="w-1/2 mt-6 px-6 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+		<div class="w-3/4 mt-6 px-6 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 			<div class="mt-4 mb-2 p-2" style="outline: 2px solid #888888">
 				<table class="w-full">
 					<tr>
@@ -56,6 +56,7 @@
 						<th class="text-left text-gray-600">Title</th>
 						<th class="text-left text-gray-600">Author</th>
 						<th class="text-left text-gray-600">Copy no</th>
+						<th class="text-left text-gray-600">Barcode</th>
 					</tr>
 					<tr
 						v-for="(inventoryItem,key) in inventoryItems.data"
@@ -77,6 +78,7 @@
 						<td class="text-left">{{ inventoryItem.book.title }}</td>
 						<td class="text-left">{{ inventoryItem.book.author.name }}</td>
 						<td class="text-left">{{ inventoryItem.copy_no }}</td>
+						<td class="text-left">{{ inventoryItem.barcode }}</td>
 					</tr>
 				</table>
 			</div>

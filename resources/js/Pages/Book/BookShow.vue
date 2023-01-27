@@ -131,7 +131,7 @@
 					</div>
 
 					<div>
-						<Label value="Latest edition published"/>
+						<Label value="This edition published"/>
 						<Input
 							id="edition_date"
 							v-model="form.edition_date"
