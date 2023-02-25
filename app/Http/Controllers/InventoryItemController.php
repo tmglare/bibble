@@ -151,8 +151,8 @@ class InventoryItemController extends Controller {
 		$data = $request->all();
 		$inventoryItem = $this->inventoryItem->findOrFail($id);
 
-		if (! $inventoryItem->barcode) {
-			$maxBarcode = $this->inventoryItem->max("barcode");
+		if (! $data["barcode"] and ! $inventoryItem->barcode) {
+			$maxBarcode = $this->inventoryItem->where("barcode","REGEXP","^T\d+")->max("barcode");
 
 			if (! $maxBarcode) {
 				$maxBarcode = "T1000";
@@ -188,5 +188,18 @@ class InventoryItemController extends Controller {
 		$inventoryItem = $this->inventoryItem->withTrashed()->find($id);
 		$inventoryItem->restore();
 		return redirect()->action("App\Http\Controllers\InventoryItemController@index");
+	}
+
+	public function selectByBarcode($barcode = null) {
+		if (! $barcode) {
+			return null;
+		}
+		$inventoryItemId = $this->inventoryItem->where("barcode",$barcode)->value("id");
+
+		if (! $inventoryItemId) {
+			return null;
+		}
+
+		return $inventoryItemId;
 	}
 }

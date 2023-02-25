@@ -136,7 +136,7 @@ class BorrowerController extends Controller {
 		$borrower = $this->borrower->findOrFail($id);
 
 		if (! $borrower->barcode) {
-			$maxBarcode = $this->borrower->max("barcode");
+			$maxBarcode = $this->borrower->where("barcode","REGEXP","^B\d+")->max("barcode");
 
 			if (! $maxBarcode) {
 				$maxBarcode = "B1000";
@@ -172,5 +172,18 @@ class BorrowerController extends Controller {
 		$borrower = $this->borrower->withTrashed()->find($id);
 		$borrower->restore();
 		return redirect()->action("App\Http\Controllers\BorrowerController@index");
+	}
+
+	public function selectByBarcode($barcode = null) {
+		if (! $barcode) {
+			return null;
+		}
+		$borrowerId = $this->borrower->where("barcode",$barcode)->value("id");
+
+		if (! $borrowerId) {
+			return null;
+		}
+
+		return $borrowerId;
 	}
 }

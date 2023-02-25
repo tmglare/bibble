@@ -53,6 +53,8 @@ Route::group(
 		Route::resource("inventoryItems",InventoryItemController::class);
 		Route::get("inventoryItems/{id}/reinstate",array(InventoryItemController::class,"reinstate"));
 		Route::resource("loans",LoanController::class);
+		Route::get("inventoryItems/byBarcode/{barcode}",array(InventoryItemController::class,"selectByBarcode"));
+		Route::get("borrowers/byBarcode/{barcode}",array(BorrowerController::class,"selectByBarcode"));
 	}
 );
 

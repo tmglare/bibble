@@ -24084,14 +24084,31 @@ __webpack_require__.r(__webpack_exports__);
     expose();
     var props = __props;
     var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
+      borrowerBarcode: "",
+      itemBarcode: "",
       borrower_id: "",
       inventory_item_id: "",
       borrowed_on: props.loan.borrowed_on.split("T")[0],
       due_back: props.loan.due_back.split("T")[0]
     });
+
+    function readBorrowerBarcode() {
+      axios.get("/borrowers/byBarcode/".concat(borrowerBarcode.value)).then(function (response) {
+        form.borrower_id = response.data;
+      });
+    }
+
+    function readItemBarcode() {
+      axios.get("/inventoryItems/byBarcode/".concat(itemBarcode.value)).then(function (response) {
+        form.inventory_item_id = response.data;
+      });
+    }
+
     var __returned__ = {
       props: props,
       form: form,
+      readBorrowerBarcode: readBorrowerBarcode,
+      readItemBarcode: readItemBarcode,
       useForm: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm,
       BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
       Label: _Components_Label_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -30065,41 +30082,47 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "w-full sm:max-w-xl mt-6 px-6 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
 };
+var _hoisted_5 = {
+  "class": "mt-1"
+};
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
   value: ""
 }, " Select a borrower ", -1
 /* HOISTED */
 );
 
-var _hoisted_6 = ["value"];
-var _hoisted_7 = {
+var _hoisted_7 = ["value"];
+var _hoisted_8 = {
   "class": "bg-red-200"
 };
+var _hoisted_9 = {
+  "class": "mt-1"
+};
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
   value: ""
 }, " Select a book ", -1
 /* HOISTED */
 );
 
-var _hoisted_9 = ["value"];
-var _hoisted_10 = {
-  "class": "bg-red-200"
-};
-var _hoisted_11 = {
-  "class": "bg-red-200"
-};
+var _hoisted_11 = ["value"];
 var _hoisted_12 = {
   "class": "bg-red-200"
 };
 var _hoisted_13 = {
+  "class": "bg-red-200"
+};
+var _hoisted_14 = {
+  "class": "bg-red-200"
+};
+var _hoisted_15 = {
   "class": "mt-2"
 };
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Index");
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Index");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("pre", _hoisted_1, "\t" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.loan) + "\n", 1
@@ -30112,50 +30135,80 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-        onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
           return $setup.form.post('/loans');
         }, ["prevent"]))
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Label"], {
-        value: "Borrower"
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-        id: "borrower_id",
+        value: "Borrower Barcode"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Input"], {
+        id: "borrowerBarcode",
+        "class": "w-3/4 border-2",
+        maxlength: "20",
+        title: "Enter barcode or select from list",
+        style: {
+          "text-transform": "uppercase"
+        },
+        modelValue: $setup.form.borrowerBarcode,
         "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+          return $setup.form.borrowerBarcode = $event;
+        }),
+        onChange: $setup.readBorrowerBarcode
+      }, null, 8
+      /* PROPS */
+      , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Label value=\"Borrower\"/> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+        id: "borrower_id",
+        "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $setup.form.borrower_id = $event;
         }),
         "class": "w-3/4 border-2",
         required: ""
-      }, [_hoisted_5, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.borrowers, function (borrower) {
+      }, [_hoisted_6, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.borrowers, function (borrower) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
           value: borrower.id
         }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(borrower.name), 9
         /* TEXT, PROPS */
-        , _hoisted_6);
+        , _hoisted_7);
       }), 256
       /* UNKEYED_FRAGMENT */
       ))], 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.borrower_id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.borrower_id), 1
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.borrower_id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.borrower_id), 1
       /* TEXT */
       )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Label"], {
-        value: "Book"
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+        value: "Book Barcode"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Input"], {
+        id: "itemBarcode",
+        "class": "w-3/4 border-2",
+        maxlength: "20",
+        title: "Enter barcode or select from list",
+        style: {
+          "text-transform": "uppercase"
+        },
+        modelValue: $setup.form.itemBarcode,
+        "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+          return $setup.form.itemBarcode = $event;
+        }),
+        onChange: $setup.readItemBarcode
+      }, null, 8
+      /* PROPS */
+      , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Label value=\"Book\"/> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
         id: "book",
-        "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+        "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
           return $setup.form.inventory_item_id = $event;
         }),
         "class": "w-3/4 border-2",
         required: ""
-      }, [_hoisted_8, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.inventoryItems, function (inventoryItem) {
+      }, [_hoisted_10, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.inventoryItems, function (inventoryItem) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
           value: inventoryItem.id
         }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(inventoryItem.book.title + ' (copy ' + inventoryItem.copy_no + ')'), 9
         /* TEXT, PROPS */
-        , _hoisted_9);
+        , _hoisted_11);
       }), 256
       /* UNKEYED_FRAGMENT */
       ))], 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.inventory_item_id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.inventoryitem_id), 1
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.inventory_item_id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.inventoryitem_id), 1
       /* TEXT */
       )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Label"], {
         value: "Borrowed on"
@@ -30163,14 +30216,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         id: "borrowedOn",
         modelValue: $setup.form.borrowed_on,
-        "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+        "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
           return $setup.form.borrowed_on = $event;
         }),
         "class": "w-3/4 border-2",
         required: ""
       }, null, 8
       /* PROPS */
-      , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.borrowed_on), 1
+      , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.borrowed_on), 1
       /* TEXT */
       )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Label"], {
         value: "Due back"
@@ -30178,20 +30231,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         id: "dueBack",
         modelValue: $setup.form.due_back,
-        "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+        "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
           return $setup.form.due_back = $event;
         }),
         "class": "w-3/4 border-2",
         required: ""
       }, null, 8
       /* PROPS */
-      , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.due_back), 1
+      , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.due_back), 1
       /* TEXT */
-      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Button"], {
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Button"], {
         "class": "text-gray-800 bg-green-400 hover:bg-green-500 active:bg-green-500 focus:bg-green-500 ml-2"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_14];
+          return [_hoisted_16];
         }),
         _: 1
         /* STABLE */
@@ -30206,7 +30259,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_15];
+          return [_hoisted_17];
         }),
         _: 1
         /* STABLE */

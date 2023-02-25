@@ -15,11 +15,33 @@
 	});
 
 	const form = useForm({
+		borrowerBarcode:   "",
+		itemBarcode:       "",
 		borrower_id:       "",
 		inventory_item_id: "",
 		borrowed_on:       props.loan.borrowed_on.split("T")[0],
 		due_back:          props.loan.due_back.split("T")[0]
 	});
+
+	function readBorrowerBarcode() {
+		axios.get(
+			`/borrowers/byBarcode/${borrowerBarcode.value}`
+		).then(
+			(response) => {
+				form.borrower_id = response.data;
+			}
+		);
+	}
+
+	function readItemBarcode() {
+		axios.get(
+			`/inventoryItems/byBarcode/${itemBarcode.value}`
+		).then(
+			(response) => {
+				form.inventory_item_id = response.data;
+			}
+		);
+	}
 </script>
 
 <template>
@@ -40,7 +62,20 @@
 		<div class="w-full sm:max-w-xl mt-6 px-6 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 			<form v-on:submit.prevent="form.post('/loans')">
 				<div>
-					<Label value="Borrower"/>
+					<Label value="Borrower Barcode"/>
+					<Input
+						id="borrowerBarcode"
+						class="w-3/4 border-2"
+						maxlength="20"
+						title="Enter barcode or select from list"
+						style="text-transform:uppercase"
+						v-model="form.borrowerBarcode"
+						v-on:change='readBorrowerBarcode'
+					/>
+				</div>
+
+				<div class="mt-1">
+					<!-- <Label value="Borrower"/> -->
 					<select
 						id="borrower_id"
 						v-model="form.borrower_id"
@@ -60,7 +95,20 @@
 				</div>
 
 				<div>
-					<Label value="Book"/>
+					<Label value="Book Barcode"/>
+					<Input
+						id="itemBarcode"
+						class="w-3/4 border-2"
+						maxlength="20"
+						title="Enter barcode or select from list"
+						style="text-transform:uppercase"
+						v-model="form.itemBarcode"
+						v-on:change='readItemBarcode'
+					/>
+				</div>
+
+				<div class="mt-1">
+					<!-- <Label value="Book"/> -->
 					<select
 						id="book"
 						v-model="form.inventory_item_id"
