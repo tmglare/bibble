@@ -134,9 +134,10 @@
 				</form>
 
 				<div>
-					<Link :href="`/loans/${loan.id}/edit`" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">Edit</Link>
-					<Link href="/loans" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">Index</Link>
-					<Link href="/loans/create" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">New</Link>
+					<Link :href="`/loans/${loan.id}/edit`" method="get" type="button" as="button" class="bg-yellow-200 w-24 border-yellow-300 border-2 rounded m-2">Edit</Link>
+					<Link href="/loans" method="get" type="button" as="button" class="bg-yellow-200 w-24 border-yellow-300 border-2 rounded m-2">Index</Link>
+					<Link href="/loans/create" method="get" type="button" as="button" class="bg-yellow-200 w-24 border-yellow-300 border-2 rounded m-2">New loan</Link>
+					<Link href="/loans/return" method="get" type="button" as="button" class="bg-yellow-200 w-24 border-yellow-300 border-2 rounded m-2">New return</Link>
 				</div>
 			</div>
 		</div>

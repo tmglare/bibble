@@ -80,6 +80,7 @@
 						<th class="text-left text-gray-600">Borrower</th>
 						<th class="text-left text-gray-600">Title</th>
 						<th class="text-left text-gray-600">Copy no</th>
+						<th class="text-left text-gray-600">Barcode</th>
 						<th class="text-left text-gray-600">Borrowed on</th>
 						<th class="text-left text-gray-600">Due back</th>
 						<th class="text-left text-gray-600">Returned on</th>
@@ -99,6 +100,7 @@
 						<td class="text-left">{{ loan.borrower.name }}</td>
 						<td class="text-left">{{ loan.inventory_item.book.title }}</td>
 						<td class="text-left">{{ loan.inventory_item.copy_no }}</td>
+						<td class="text-left">{{ loan.inventory_item.barcode }}</td>
 						<td class="text-left">{{ formatDate(loan.borrowed_on) }}</td>
 						<td class="text-left">{{ formatDate(loan.due_back) }}</td>
 						<td class="text-left">{{ formatDate(loan.returned_on) }}</td>

@@ -160,4 +160,28 @@ class LoanController extends Controller {
 		$loan->delete();
 		return redirect()->action("App\Http\Controllers\LoanController@index");
 	}
+
+	public function return() {
+		return Inertia::render(
+			"Loan/LoanReturn"
+		);
+	}
+
+	public function processReturn(Request $request) {
+		$itemId = $request->input("inventory_item_id");
+		if ($itemId) {
+			$item = InventoryItem::find($itemId);
+			if ($item) {
+				$loan = $this->loan->where("inventory_item_id",$itemId)->whereNull("returned_on")->first();
+				if (! $loan) {
+					return redirect()->back()->withErrors(__("Item is not on loan!"));
+				}
+				$loan->returned_on = Carbon::today();
+				$loan->save();
+				return redirect()->action("App\Http\Controllers\LoanController@show",$loan->id);
+			}
+		}
+
+		return redirect()->back()->withErrors(__("Item not found"));
+	}
 }

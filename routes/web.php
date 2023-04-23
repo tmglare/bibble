@@ -24,7 +24,7 @@ use App\Http\Controllers\LoanController;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Welcome-custom', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -52,9 +52,13 @@ Route::group(
 		Route::get("borrowers/{id}/reinstate",array(BorrowerController::class,"reinstate"));
 		Route::resource("inventoryItems",InventoryItemController::class);
 		Route::get("inventoryItems/{id}/reinstate",array(InventoryItemController::class,"reinstate"));
+		Route::get("loans/return",array(LoanController::class,"return"));
+		Route::post("loans/processReturn",array(LoanController::class,"processReturn"));
 		Route::resource("loans",LoanController::class);
 		Route::get("inventoryItems/byBarcode/{barcode}",array(InventoryItemController::class,"selectByBarcode"));
 		Route::get("borrowers/byBarcode/{barcode}",array(BorrowerController::class,"selectByBarcode"));
+		Route::get("borrowers/getBorrowerByBarcode/{barcode}",array(BorrowerController::class,"getBorrowerByBarcode"));
+		Route::get("inventoryItems/getItemByBarcode/{barcode}",array(InventoryItemController::class,"getItemByBarcode"));
 	}
 );
 

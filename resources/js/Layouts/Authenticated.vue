@@ -164,6 +164,9 @@ const showingNavigationDropdown = ref(false);
                                         <BreezeDropdownLink href="/loans/create" method="get" as="button">
                                             New Loan
                                         </BreezeDropdownLink>
+                                        <BreezeDropdownLink href="/loans/return" method="get" as="button">
+                                            Return
+                                        </BreezeDropdownLink>
                                     </template>
                                 </BreezeDropdown>
                             </div>

@@ -157,7 +157,7 @@
 
 				<div class="mt-2">
 					<Button class="text-gray-800 bg-green-400 hover:bg-green-500  active:bg-green-500  focus:bg-green-500 ml-2">
-						Save
+						Finish
 					</Button>
 				</div>
 			</form>

@@ -186,4 +186,18 @@ class BorrowerController extends Controller {
 
 		return $borrowerId;
 	}
+
+	public function getBorrowerByBarcode($barcode = null) {
+		if (! $barcode) {
+			return null;
+		}
+
+		$borrower = $this->borrower->where("barcode",$barcode)->first();
+
+		if (! $borrower) {
+			return null;
+		}
+
+		return $borrower;
+	}
 }

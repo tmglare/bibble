@@ -202,4 +202,18 @@ class InventoryItemController extends Controller {
 
 		return $inventoryItemId;
 	}
+
+	public function getItemByBarcode($barcode = null) {
+		if (! $barcode) {
+			return null;
+		}
+
+		$item = $this->inventoryItem->where("barcode",$barcode)->with("book")->first();
+
+		if (! $item) {
+			return null;
+		}
+
+		return $item;
+	}
 }
