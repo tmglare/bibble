@@ -1,4 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/fontawesome-free/LICENSE.txt": "/fontawesome-free/LICENSE.txt",
+    "/fontawesome-free/attribution.js": "/fontawesome-free/attribution.js",
+    "/fontawesome-free/package.json": "/fontawesome-free/package.json"
 }

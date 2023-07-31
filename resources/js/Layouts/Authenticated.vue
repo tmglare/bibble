@@ -152,6 +152,9 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        <BreezeDropdownLink href="/loans/counter" method="get" as="button">
+                                            Counter Operations
+                                        </BreezeDropdownLink>
                                         <BreezeDropdownLink href="/borrowers" method="get" as="button">
                                             Borrower Index
                                         </BreezeDropdownLink>
@@ -159,7 +162,10 @@ const showingNavigationDropdown = ref(false);
                                             New Borrower
                                         </BreezeDropdownLink>
                                         <BreezeDropdownLink href="/loans" method="get" as="button">
-                                            Loan Index
+                                            Loan Index (open only)
+                                        </BreezeDropdownLink>
+                                        <BreezeDropdownLink href="/loans-incl-history" method="get" as="button">
+                                            Loan Index (incl history)
                                         </BreezeDropdownLink>
                                         <BreezeDropdownLink href="/loans/create" method="get" as="button">
                                             New Loan
@@ -239,6 +245,9 @@ const showingNavigationDropdown = ref(false);
                 <div class="mx-auto py-2 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
+								<div v-if="$page.props.flash.message" class="bg-yellow-200 -pb-2 px-8">
+									{{ $page.props.flash.message }}
+								</div>
             </header>
 
             <!-- Page Content -->

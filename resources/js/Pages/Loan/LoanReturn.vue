@@ -115,7 +115,7 @@
 						id="itemBarcode"
 						class="w-3/4 border-2"
 						maxlength="20"
-						title="Enter barcode or select from list"
+						title="Enter barcode"
 						style="text-transform:uppercase"
 						v-model="form.itemBarcode"
 						v-on:focusout='readItemBarcode()'

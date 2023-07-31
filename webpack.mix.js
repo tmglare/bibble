@@ -20,7 +20,11 @@ mix.js('resources/js/app.js', 'public/js')
     ])
     .alias({
         '@': 'resources/js',
-    });
+    })
+		.copy(
+			'node_modules/@fortawesome/fontawesome-free',
+			'public/fontawesome-free'
+		);
 
 if (mix.inProduction()) {
     mix.version();

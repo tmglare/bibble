@@ -52,4 +52,8 @@ class Book extends Model {
 	public function inventoryItems() {
 		return $this->hasMany("\App\Models\InventoryItem");
 	}
+
+	public function tags() {
+		return $this->belongsToMany("App\Models\Tag")->withTimestamps();
+	}
 }

@@ -4,6 +4,7 @@
 	import Input from '@/Components/Input.vue';
 	import Button from '@/Components/Button.vue';
 	import Errors from '@/Components/Errors.vue';
+	import Pagination from '@/Components/Pagination.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
 
@@ -14,10 +15,12 @@
 
 	const props = defineProps({
 			errors: Object,
-			loans: Object
+			loans: Object,
+			history: Number,
+			altIndex: String
 	});
 
-	const history = ref(0);
+	const history = ref(props.history);
 
 	const filteredLoans = computed(function() {
 		return props.loans.data.filter(
@@ -61,17 +64,19 @@
 	<div class="flex flex-col justify-center items-left pt-6 px-6 sm:pt-0 bg-gray-100">
 		<Errors v-bind:errors="errors"></Errors>
 		<div class="w-full mt-6 px-6 pt-4 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-				<div style="display:inline-block;padding: 5px 50px 5px 10px;outline: solid black 1px">
+<!--
+			<div style="display:inline-block;padding: 5px 50px 5px 10px;outline: solid black 1px">
 				History
 				<ul>
 					<li>
-						<input type="radio" name="history" value="0" checked v-on:click="toggleHistory(0)"><span style="margin-left:20%">Off</span>
+						<input type="radio" name="history" value="0" v-bind:checked="history" v-on:click="toggleHistory(0)"><span style="margin-left:20%">Off</span>
 					</li>
 					<li>
-						<input type="radio" name="history" value="1" v-on:click="toggleHistory(1)"><span style="margin-left:20%">On</span>
+						<input type="radio" name="history" value="1" v-bind:checked="history" v-on:click="toggleHistory(1)"><span style="margin-left:20%">On</span>
 					</li>
 				</ul>
-				</div>
+			</div>
+-->
 			<div class="mt-4 mb-2 p-2" style="outline: 2px solid #888888">
 				<table class="w-full">
 					<tr>
@@ -86,7 +91,7 @@
 						<th class="text-left text-gray-600">Returned on</th>
 					</tr>
 					<tr
-						v-for="(loan,key) in filteredLoans"
+						v-for="(loan,key) in loans.data"
 						v-bind:class="zebra"
 					>
 						<td>
@@ -106,10 +111,15 @@
 						<td class="text-left">{{ formatDate(loan.returned_on) }}</td>
 					</tr>
 				</table>
+<pre style="display:none">
+		{{ JSON.stringify(loans.links,null,2) }}
+</pre>
+				<Pagination :data="loans" />
 			</div>
 
 			<div>
 				<Link href="/loans/create" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">New</Link>
+				<Link v-bind:href="altIndex" method="get" type="button" as="button" class="bg-yellow-200 w-36 border-yellow-300 border-2 rounded m-2">Toggle history</Link>
 			</div>
 
 		</div>

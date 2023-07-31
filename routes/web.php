@@ -53,7 +53,9 @@ Route::group(
 		Route::resource("inventoryItems",InventoryItemController::class);
 		Route::get("inventoryItems/{id}/reinstate",array(InventoryItemController::class,"reinstate"));
 		Route::get("loans/return",array(LoanController::class,"return"));
+		Route::get("loans/counter",array(LoanController::class,"counter"));
 		Route::post("loans/processReturn",array(LoanController::class,"processReturn"));
+		Route::get("loans-incl-history",array(LoanController::class,"indexInclHistory"));
 		Route::resource("loans",LoanController::class);
 		Route::get("inventoryItems/byBarcode/{barcode}",array(InventoryItemController::class,"selectByBarcode"));
 		Route::get("borrowers/byBarcode/{barcode}",array(BorrowerController::class,"selectByBarcode"));

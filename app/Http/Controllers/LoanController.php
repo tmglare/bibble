@@ -26,14 +26,37 @@ class LoanController extends Controller {
 		$borrowerId = $request->input("borrowerId");
 
 		if ($borrowerId) {
-			$loans = $this->loan->where("borrower_id",$borrowerId)->with("borrower","inventoryItem.book")->orderBy("returned_on")->orderBy("borrowed_on")->paginate(10);
+			$loans = $this->loan->where("borrower_id",$borrowerId)->whereNull("returned_on")->with("borrower","inventoryItem.book")->orderBy("borrowed_on")->paginate(8);
 		} else {
-			$loans = $this->loan->with("borrower","inventoryItem.book")->orderBy("returned_on")->orderBy("borrowed_on")->paginate(10);
+			$loans = $this->loan->with("borrower","inventoryItem.book")->whereNull("returned_on")->orderBy("borrowed_on")->paginate(8);
 		}
 
 		return Inertia::render(
 			"Loan/LoanIndex",
-			array("loans" => $loans)
+			array(
+				"loans" => $loans,
+				"history" => 0,
+				"altIndex" => "loans-incl-history"
+			)
+		);
+	}
+
+	public function indexInclHistory(Request $request) {
+		$borrowerId = $request->input("borrowerId");
+
+		if ($borrowerId) {
+			$loans = $this->loan->where("borrower_id",$borrowerId)->with("borrower","inventoryItem.book")->orderBy("returned_on")->orderBy("borrowed_on")->paginate(8);
+		} else {
+			$loans = $this->loan->with("borrower","inventoryItem.book")->orderBy("returned_on")->orderBy("borrowed_on")->paginate(8);
+		}
+
+		return Inertia::render(
+			"Loan/LoanIndex",
+			array(
+				"loans" => $loans,
+				"history" => 1,
+				"altIndex" => "loans"
+			)
 		);
 	}
 
@@ -81,7 +104,13 @@ class LoanController extends Controller {
 
 		$loan = $this->loan->create($data);
 
-		return redirect()->action("App\Http\Controllers\LoanController@show",$loan->id);
+		session()->flash("message",__("Item successfully booked out"));
+
+		if ($request->input("counter")) {
+			return redirect()->action("App\Http\Controllers\LoanController@counter");
+		} else {
+			return redirect()->action("App\Http\Controllers\LoanController@show",$loan->id);
+		}
 	}
 
 	/**
@@ -178,10 +207,39 @@ class LoanController extends Controller {
 				}
 				$loan->returned_on = Carbon::today();
 				$loan->save();
-				return redirect()->action("App\Http\Controllers\LoanController@show",$loan->id);
+
+				// return redirect()->action("App\Http\Controllers\LoanController@show",$loan->id);
+
+				session()->flash("message",__("Item successfully booked in"));
+
+				if ($request->input("counter")) {
+					return redirect()->action("App\Http\Controllers\LoanController@counter");
+				} else {
+					return redirect()->action("App\Http\Controllers\LoanController@show",$loan->id);
+				}
 			}
 		}
 
 		return redirect()->back()->withErrors(__("Item not found"));
+	}
+
+	public function counter() {
+		$borrowers = Borrower::select("id","name")->orderBy("name")->get();
+		$inventoryItemsOffLoan = InventoryItem::with("book")->select("id","copy_no","book_id")->whereDoesntHave("loans",function (Builder $query) { $query->whereNull("returned_on");})->get();
+		$inventoryItemsOnLoan = InventoryItem::with("book")->select("id","copy_no","book_id")->whereHas("loans",function (Builder $query) { $query->whereNull("returned_on");})->get();
+
+		$loan = new $this->loan;
+		$loan->borrowed_on = Carbon::today();
+		$loan->due_back    = $loan->borrowed_on->addWeek(3);
+
+		return Inertia::render(
+			"Loan/LoanCounter",
+			array(
+				"loan"           => $loan,
+				"borrowers"      => $borrowers,
+				"inventoryItemsOffLoan" => $inventoryItemsOffLoan,
+				"inventoryItemsOnLoan" => $inventoryItemsOnLoan
+			)
+		);
 	}
 }
