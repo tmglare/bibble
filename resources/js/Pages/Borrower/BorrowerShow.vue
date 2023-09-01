@@ -3,6 +3,7 @@
 	import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 	import Label from '@/Components/Label.vue';
 	import Input from '@/Components/Input.vue';
+	import Errors from '@/Components/Errors.vue';
 	import Button from '@/Components/Button.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
@@ -151,7 +152,6 @@
 					<Link href="/borrowers/create" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">New</Link>
 					<Link :href="`/loans?borrowerId=${borrower.id}`" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">Loans</Link>
 				</div>
-
 			</div>
 		</div>
 	</BreezeAuthenticatedLayout>

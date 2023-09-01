@@ -18,7 +18,7 @@ class BorrowerController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function index() {
-		$borrowers = $this->borrower->withTrashed()->orderBy("name")->paginate(10);
+		$borrowers = $this->borrower->withTrashed()->orderBy("surname")->orderBy("forenames")->paginate(10);
 
 		return Inertia::render(
 			"Borrower/BorrowerIndex",
@@ -52,7 +52,7 @@ class BorrowerController extends Controller {
 		$this->validate(
 			$request,
 			array(
-				"name"     => "required",
+				"surname"  => "required",
 				"street"   => "required",
 				"town"     => "required",
 				"postcode" => "required"
@@ -124,7 +124,7 @@ class BorrowerController extends Controller {
 		$this->validate(
 			$request,
 			array(
-				"name"     => "required",
+				"surname"  => "required",
 				"street"   => "required",
 				"town"     => "required",
 				"postcode" => "required",

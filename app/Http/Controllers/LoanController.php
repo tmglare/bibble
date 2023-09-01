@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Models\Book;
 use App\Models\Loan;
 use App\Models\Borrower;
 use App\Models\InventoryItem;
@@ -24,38 +25,87 @@ class LoanController extends Controller {
 	*/
 	public function index(Request $request) {
 		$borrowerId = $request->input("borrowerId");
+		$columnName = $request->input("columnName");
+		$direction  = $request->input("direction");
+
+		if (! $direction) { $direction = "asc"; }
+
+		if ($columnName) {
+			$sortColumn = $columnName;
+		} else {
+			$sortColumn = "borrowed_on";
+		}
 
 		if ($borrowerId) {
-			$loans = $this->loan->where("borrower_id",$borrowerId)->whereNull("returned_on")->with("borrower","inventoryItem.book")->orderBy("borrowed_on")->paginate(8);
+			$loans = $this->loan
+				->with(array("borrower","inventoryItem.book"))
+				->where("borrower_id",$borrowerId)
+				->join("borrowers","loans.borrower_id","=","borrowers.id")
+				->join("inventory_items","loans.inventory_item_id","=","inventory_items.id")
+				->join("books","inventory_items.book_id","=","books.id")
+				->select("loans.id AS loan_id","inventory_item_id","borrower_id","borrowed_on","due_back","returned_on")
+				->whereNull("returned_on")
+				->orderBy($sortColumn,$direction)
+				->paginate(8)
+				->withQueryString();
 		} else {
-			$loans = $this->loan->with("borrower","inventoryItem.book")->whereNull("returned_on")->orderBy("borrowed_on")->paginate(8);
-		}
+			$loans = $this->loan
+				->with(array("borrower","inventoryItem.book"))
+				->join("borrowers","loans.borrower_id","=","borrowers.id")
+				->join("inventory_items","loans.inventory_item_id","=","inventory_items.id")
+				->join("books","inventory_items.book_id","=","books.id")
+				->select("loans.id AS loan_id","inventory_item_id","borrower_id","borrowed_on","due_back","returned_on")
+				->whereNull("returned_on")
+				->orderBy($sortColumn,$direction)
+				->paginate(8)
+				->withQueryString(); }
 
 		return Inertia::render(
 			"Loan/LoanIndex",
 			array(
 				"loans" => $loans,
-				"history" => 0,
-				"altIndex" => "loans-incl-history"
+				"borrowerId" => $borrowerId
 			)
 		);
 	}
 
 	public function indexInclHistory(Request $request) {
 		$borrowerId = $request->input("borrowerId");
+		$columnName = $request->input("columnName");
+		$direction  = $request->input("direction");
+
+		if (! $direction) { $direction = "asc"; }
+
+		if ($columnName) {
+			$sortColumn = $columnName;
+		} else {
+			$sortColumn = "borrowed_on";
+		}
 
 		if ($borrowerId) {
-			$loans = $this->loan->where("borrower_id",$borrowerId)->with("borrower","inventoryItem.book")->orderBy("returned_on")->orderBy("borrowed_on")->paginate(8);
+			$loans = $this->loan
+				->with(array("borrower","inventoryItem.book"))
+				->where("borrower_id",$borrowerId)
+				->join("borrowers","loans.borrower_id","=","borrowers.id")
+				->orderBy($sortColumn,$direction)
+				->paginate(8)
+				->withQueryString();
 		} else {
-			$loans = $this->loan->with("borrower","inventoryItem.book")->orderBy("returned_on")->orderBy("borrowed_on")->paginate(8);
+			$loans = $this->loan
+				->with(array("borrower","inventoryItem.book"))
+				->join("borrowers","loans.borrower_id","=","borrowers.id")
+				->join("inventory_items","loans.inventory_item_id","=","inventory_items.id")
+				->join("books","inventory_items.book_id","=","books.id")
+				->select("loans.id AS loan_id","inventory_item_id","borrower_id","borrowed_on","due_back","returned_on")
+				->orderBy($sortColumn,$direction)
+				->paginate(8)
+				->withQueryString();
 		}
 
 		return Inertia::render(
-			"Loan/LoanIndex",
+			"Loan/LoanHistoryIndex",
 			array(
-				"loans" => $loans,
-				"history" => 1,
-				"altIndex" => "loans"
+				"loans" => $loans
 			)
 		);
 	}
@@ -66,7 +116,7 @@ class LoanController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function create() {
-		$borrowers = Borrower::select("id","name")->orderBy("name")->get();
+		$borrowers = Borrower::select("id","forenames","surname")->orderBy("surname")->orderBy("forenames")->get();
 		$inventoryItems = InventoryItem::with("book")->select("id","copy_no","book_id")->whereDoesntHave("loans",function (Builder $query) { $query->whereNull("returned_on");})->get();
 
 		$loan = new $this->loan;
@@ -123,7 +173,8 @@ class LoanController extends Controller {
 		try {
 			$loan = $this->loan->with(array("borrower","inventoryItem.book"))->findOrFail($id);
 		} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-			return redirect()->back()->withErrors(__("Loan cannot be found"));
+			// return redirect()->back()->withErrors(__("Loan cannot be found"));
+			return redirect()->back()->withErrors($e->getMessage());
 		}
 
 		return Inertia::render(
@@ -224,9 +275,9 @@ class LoanController extends Controller {
 	}
 
 	public function counter() {
-		$borrowers = Borrower::select("id","name")->orderBy("name")->get();
-		$inventoryItemsOffLoan = InventoryItem::with("book")->select("id","copy_no","book_id")->whereDoesntHave("loans",function (Builder $query) { $query->whereNull("returned_on");})->get();
-		$inventoryItemsOnLoan = InventoryItem::with("book")->select("id","copy_no","book_id")->whereHas("loans",function (Builder $query) { $query->whereNull("returned_on");})->get();
+		$borrowers = Borrower::select("id","forenames","surname","barcode")->orderBy("surname")->orderBy("forenames")->get();
+		$inventoryItemsOffLoan = InventoryItem::with("book")->select("id","copy_no","book_id","barcode")->whereDoesntHave("loans",function (Builder $query) { $query->whereNull("returned_on");})->get();
+		$inventoryItemsOnLoan = InventoryItem::with("book")->select("id","copy_no","book_id","barcode")->whereHas("loans",function (Builder $query) { $query->whereNull("returned_on");})->get();
 
 		$loan = new $this->loan;
 		$loan->borrowed_on = Carbon::today();

@@ -15,9 +15,8 @@
 	import { Inertia } from '@inertiajs/inertia';
 
 	const props = defineProps({
-			errors: Object,
-			loans: Object,
-			borrowerId: Number
+		errors: Object,
+		loans: Object
 	});
 
 	const zebra = "even:bg-gray-200 odd:bg-gray-100";
@@ -38,7 +37,7 @@
 <pre style="display:none;font-size:xx-small">
 	{{ loans }}
 </pre>
-	<Head title="Loans" />
+	<Head title="Loans (incl history)" />
 	<BreezeAuthenticatedLayout>
 	<template #header>
 		<h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -55,11 +54,11 @@
 						<th></th>
 						<th></th>
 						<th class="text-left text-gray-600">
-							Borrower <ColumnSort :borrowerId="borrowerId"  url="loans" columnName="borrowers.surname"></ColumnSort>
+							Borrower <ColumnSort url="loans-incl-history" columnName="borrowers.surname"></ColumnSort>
 						</th>
 
 						<th class="text-left text-gray-600">
-							Title <ColumnSort :borrowerId="borrowerId" url="loans" columnName="books.title"></ColumnSort>
+							Title <ColumnSort url="loans-incl-history" columnName="books.title"></ColumnSort>
 						</th>
 
 						<th class="text-left text-gray-600">
@@ -71,16 +70,16 @@
 						</th>
 
 						<th class="text-left text-gray-600">
-							Borrowed on <ColumnSort :borrowerId="borrowerId" url="loans" columnName="borrowed_on"></ColumnSort>
+							Borrowed on <ColumnSort url="loans-incl-history" columnName="borrowed_on"></ColumnSort>
 						</th>
 
 						<th class="text-left text-gray-600">
-							Due back <ColumnSort :borrowerId="borrowerId" url="loans" columnName="due_back"></ColumnSort>
+							Due back <ColumnSort url="loans-incl-history" columnName="due_back"></ColumnSort>
 						</th>
 
 						<th class="text-left text-gray-600">
 							Returned on
-							<ColumnSort :borrowerId="borrowerId" url="loans" columnName="returned_on"></ColumnSort> </th>
+							<ColumnSort url="loans-incl-history" columnName="returned_on"></ColumnSort> </th>
 					</tr>
 					<tr
 						v-for="(loan,key) in loans.data"
@@ -111,10 +110,6 @@
 <pre style="display:none">
 	{{ loans.links }}
 </pre>
-<pre style="display:none">
-	{{ borrowerId }}
-</pre>
-
 			<div>
 				<Link href="/loans/create" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">New</Link>
 			</div>

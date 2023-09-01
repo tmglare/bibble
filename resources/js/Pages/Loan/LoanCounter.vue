@@ -76,6 +76,10 @@
 		let barcode = document.getElementById("itemInBarcode").value;
 
 		if (! barcode) {
+			if (form1.inventory_item_id) {
+				form1.post("/loans/processReturn?counter=1",{ preserveState: false });
+				return true;
+			}
 			ibcError.value = "Barcode required";
 			return false;
 		}
@@ -142,7 +146,6 @@
 									style="text-transform:uppercase"
 									v-model="form1.itemBarcode"
 									v-on:change="readItemInBarcode()"
-									required
 								/>
 								<div class="bg-red-200">
 									{{ ibcError }}
@@ -154,14 +157,15 @@
 								<select
 									id="book"
 									v-model="form1.inventory_item_id"
+									v-on:click="form1.itemBarcode = '';"
 									class="w-3/4 border-2"
 									required
 								>
 									<option value="" selected>
-										Select a book
+										Barcode missing/damaged?
 									</option>
 									<option v-for="(inventoryItem) in inventoryItemsOnLoan" :value="inventoryItem.id">
-										{{ inventoryItem.book.title + ' (copy ' + inventoryItem.copy_no + ')' }}
+										{{ '[' + inventoryItem.barcode + '] ' + inventoryItem.book.title + ' (copy ' + inventoryItem.copy_no + ')' }}
 									</option>
 								</select>
 
@@ -169,35 +173,7 @@
 									{{ errors.inventoryitem_id }}
 								</div>
 							</div>
-<!--
-				<div class="mt-1">
-					<input type="hidden" id="inventory_item_id" v-model="form1.inventory_item_id" required>
 
-					<Label value="Title"/>
-					<Input
-						v-model="form1.itemName"
-						id="itemName"
-						class="w-3/4 border-2"
-						disabled
-					/>
-					<div class="bg-red-200">
-						{{ errors.itemName }}
-					</div>
-				</div>
-
-				<div class="mt-1">
-					<Label value="Copy no"/>
-					<Input
-						v-model="form1.copyNo"
-						id="copyNo"
-						class="w-3/4 border-2"
-						disabled
-					/>
-					<div class="bg-red-200">
-						{{ errors.copyNo }}
-					</div>
-				</div>
--->
 							<div class="mt-2">
 								<Button class="text-gray-800 bg-green-400 hover:bg-green-500  active:bg-green-500  focus:bg-green-500 ml-2">
 									Return now
@@ -228,14 +204,15 @@
 								<select
 									id="borrower_id"
 									v-model="form2.borrower_id"
+									v-on:click="form2.borrowerBarcode = '';"
 									class="w-3/4 border-2"
 									required
 								>
 									<option value="" selected>
-										Select a borrower
+										Barcode missing/damaged?
 									</option>
 									<option v-for="(borrower) in borrowers" :value="borrower.id">
-											{{ borrower.name }}
+											{{ '[' + borrower.barcode + '] ' + borrower.name }}
 									</option>
 								</select>
 								<div class="bg-red-200">
@@ -261,14 +238,15 @@
 								<select
 									id="book"
 									v-model="form2.inventory_item_id"
+									v-on:click="form2.itemBarcode = '';"
 									class="w-3/4 border-2"
 									required
 								>
 									<option value="" selected>
-										Select a book
+										Barcode missing/damaged?
 									</option>
 									<option v-for="(inventoryItem) in inventoryItemsOffLoan" :value="inventoryItem.id">
-										{{ inventoryItem.book.title + ' (copy ' + inventoryItem.copy_no + ')' }}
+										{{ '[' + inventoryItem.barcode + '] ' + inventoryItem.book.title + ' (copy ' + inventoryItem.copy_no + ')' }}
 									</option>
 								</select>
 

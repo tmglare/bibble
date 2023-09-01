@@ -14,7 +14,8 @@
 
 	const form = useForm({
 		style:     props.borrower.style,
-		name:      props.borrower.name,
+		surname:   props.borrower.surname,
+		forenames: props.borrower.forenames,
 		street:    props.borrower.street,
 		town:      props.borrower.town,
 		postcode:  props.borrower.postcode,
@@ -49,15 +50,27 @@
 							</div>
 
 							<div>
-								<Label value="Name"/>
+								<Label value="Forenames"/>
 								<Input
-									id="name"
-									v-model="form.name"
+									id="forenames"
+									v-model="form.forenames"
+									class="w-3/4 border-2"
+								/>
+								<div class="bg-red-200">
+									{{ errors.forenames }}
+								</div>
+							</div>
+
+							<div>
+								<Label value="Surname"/>
+								<Input
+									id="surname"
+									v-model="form.surname"
 									class="w-3/4 border-2"
 									required
 								/>
 								<div class="bg-red-200">
-									{{ errors.name }}
+									{{ errors.surname }}
 								</div>
 							</div>
 

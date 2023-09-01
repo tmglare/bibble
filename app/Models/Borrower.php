@@ -22,7 +22,8 @@ class Borrower extends Model {
 	);
 
 	protected $fillable = array(
-		"name",
+		"forenames",
+		"surname",
 		"style",
 		"street",
 		"town",
@@ -33,7 +34,8 @@ class Borrower extends Model {
 	);
 
 	protected $casts = array(
-		"name"      => "string",
+		"forenames" => "string",
+		"surname"   => "string",
 		"style"     => "string",
 		"street"    => "string",
 		"town"      => "string",
@@ -42,6 +44,16 @@ class Borrower extends Model {
 		"email"     => "string",
 		"barcode"   => "string"
 	);
+
+	protected $appends = array(
+		"name"
+	);
+
+	public function getNameAttribute() {
+		if (! $this->forenames) { return $this->surname; }
+		if (! $this->surname)   { return $this->forenames; }
+		return ("$this->surname, $this->forenames");
+	}
 
 	public function setTownAttribute($value) {
 		$this->attributes["town"] = strtoupper($value);
