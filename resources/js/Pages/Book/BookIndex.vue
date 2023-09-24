@@ -4,6 +4,7 @@
 	import Input from '@/Components/Input.vue';
 	import Button from '@/Components/Button.vue';
 	import Errors from '@/Components/Errors.vue';
+	import Pagination from '@/Components/Pagination.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
 
@@ -85,6 +86,7 @@
 						<td class="text-left">{{ book.detailed_category.name }}</td>
 					</tr>
 				</table>
+				<Pagination :data="books" />
 			</div>
 
 			<div>

@@ -3,6 +3,7 @@
 	import Label from '@/Components/Label.vue';
 	import Input from '@/Components/Input.vue';
 	import Button from '@/Components/Button.vue';
+	import Pagination from '@/Components/Pagination.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
 
@@ -81,6 +82,7 @@
 						<td class="text-left">{{ inventoryItem.barcode }}</td>
 					</tr>
 				</table>
+				<Pagination :data="inventoryItems" />
 			</div>
 
 			<div>

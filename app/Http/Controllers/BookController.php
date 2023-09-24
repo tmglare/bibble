@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Author;
 use App\Models\DetailedCategory;
+use App\Models\InventoryItem;
 use App\Models\Book;
 use Inertia\Inertia;
 
@@ -71,7 +72,29 @@ class BookController extends Controller {
 
 		$book = $this->book->create($data);
 
+		if ($request->input("add_inventory_item")) {
+			$maxBarcode = InventoryItem::max("barcode");
+
+			if (! $maxBarcode) {
+				$maxBarcode = "T1000";
+			}
+
+			$newBarcode = ++$maxBarcode;
+
+			$inventoryItem = new InventoryItem;
+			$inventoryItem->book_id = $book->id;
+			$inventoryItem->copy_no = 1;
+			$inventoryItem->barcode = $newBarcode;
+
+			$inventoryItem->save();
+
+			session()->flash("message",__("Book title and library copy added"));
+		} else {
+			session()->flash("message",__("Book title added (no library copy added)"));
+		}
+
 		return redirect()->action("App\Http\Controllers\BookController@show",$book->id);
+		// return redirect()->action("App\Http\Controllers\BookController@create");
 	}
 
 	/**

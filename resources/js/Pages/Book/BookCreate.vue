@@ -22,7 +22,8 @@
 		author_id: "",
 		detailed_category_id: "",
 		first_publication_date: "",
-		edition_date: ""
+		edition_date: "",
+		add_inventory_item: 0
 	});
 </script>
 
@@ -158,6 +159,12 @@
 						<div class="bg-red-200">
 							{{ errors.edition_date }}
 						</div>
+					</div>
+
+					<div>
+						<Label value="Add library copy?"/>
+						No <input type="radio" v-model="form.add_inventory_item" value="0" class="mr-4">
+						Yes <input type="radio" v-model="form.add_inventory_item" value="1">
 					</div>
 
 					<div class="mt-2">
