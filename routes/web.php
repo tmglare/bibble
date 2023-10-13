@@ -48,8 +48,10 @@ Route::group(
 		Route::get("detailedCategories/{id}/reinstate",array(DetailedCategoryController::class,"reinstate"));
 		Route::resource("books",BookController::class);
 		Route::get("books/{id}/reinstate",array(BookController::class,"reinstate"));
+		Route::get("borrowers/barcodesPDF",array(BorrowerController::class,"barcodesPDF"));
 		Route::resource("borrowers",BorrowerController::class);
 		Route::get("borrowers/{id}/reinstate",array(BorrowerController::class,"reinstate"));
+		Route::get("inventoryItems/barcodesPDF",array(InventoryItemController::class,"barcodesPDF"));
 		Route::resource("inventoryItems",InventoryItemController::class);
 		Route::get("inventoryItems/{id}/reinstate",array(InventoryItemController::class,"reinstate"));
 		Route::get("loans/return",array(LoanController::class,"return"));

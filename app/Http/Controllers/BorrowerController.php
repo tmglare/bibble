@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Borrower;
 use Inertia\Inertia;
+use DNS1D;
+use PDF;
 
 class BorrowerController extends Controller {
 	public function __construct(Borrower $borrower) {
@@ -87,6 +89,9 @@ class BorrowerController extends Controller {
 		} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 			return redirect()->back()->withErrors(__("Borrower cannot be found"));
 		}
+
+		$barcodeImage = DNS1D::getBarcodePNG($borrower->barcode,"C128");
+		$borrower->barcodeImage = $barcodeImage;
 
 		return Inertia::render(
 			"Borrower/BorrowerShow",
@@ -199,5 +204,20 @@ class BorrowerController extends Controller {
 		}
 
 		return $borrower;
+	}
+
+	public function barcodesPDF() {
+		$borrowers = $this->borrower->orderBy("barcode")->get();
+
+		$borrowers = $borrowers->map(function($borrower) {
+			return [
+				"name"         => $borrower->name,
+				"barcode"      => $borrower->barcode,
+				"barcodeImage" => DNS1D::getBarcodePNG($borrower->barcode,"C128")
+			];
+		});
+
+		$pdf = PDF::loadView('Borrower/barcodesPDF',array("borrowers" => $borrowers));
+		return $pdf->download("barcodes.pdf");
 	}
 }

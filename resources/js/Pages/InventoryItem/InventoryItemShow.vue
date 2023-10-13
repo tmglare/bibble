@@ -20,6 +20,8 @@
 		copyNo:                 props.inventoryItem.copy_no,
 		barcode:                props.inventoryItem.barcode
 	});
+
+	const barcodeImageSrc = "data:image/png;base64," + props.inventoryItem.barcodeImage;
 </script>
 
 <template>
@@ -94,6 +96,10 @@
 						<div class="bg-red-200">
 							{{ errors.barcode }}
 						</div>
+					</div>
+
+					<div class="mt-2">
+						<img v-bind:src="barcodeImageSrc" />
 					</div>
 				</form>
 

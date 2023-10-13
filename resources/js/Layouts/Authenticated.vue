@@ -130,6 +130,11 @@ const showingNavigationDropdown = ref(false);
                                         <BreezeDropdownLink href="/inventoryItems/create" method="get" as="button">
                                             New Item
                                         </BreezeDropdownLink>
+    																		<div class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+                                        	<a href="/inventoryItems/barcodesPDF" method="get" as="button">
+                                            Barcode Label Print
+                                        	</a>
+																				</div>
                                     </template>
                                 </BreezeDropdown>
                                 <BreezeDropdown
@@ -164,6 +169,11 @@ const showingNavigationDropdown = ref(false);
                                         <BreezeDropdownLink href="/loans" method="get" as="button">
                                             Loan Index (open only)
                                         </BreezeDropdownLink>
+    																		<div class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+                                        	<a href="/borrowers/barcodesPDF" method="get" as="button">
+                                            Barcode Label Print
+                                        	</a>
+																				</div>
                                         <BreezeDropdownLink href="/loans-incl-history" method="get" as="button">
                                             Loan Index (incl history)
                                         </BreezeDropdownLink>

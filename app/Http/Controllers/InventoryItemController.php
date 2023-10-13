@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 use App\Models\InventoryItem;
 use App\Models\Book;
 use Inertia\Inertia;
+use DNS1D;
+use PDF;
 
 class InventoryItemController extends Controller {
 	public function __construct(InventoryItem $inventoryItem) {
@@ -96,6 +98,9 @@ class InventoryItemController extends Controller {
 		} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 			return redirect()->back()->withErrors(__("Item cannot be found"));
 		}
+
+		$barcodeImage = DNS1D::getBarcodePNG($inventoryItem->barcode,"C128");
+		$inventoryItem->barcodeImage = $barcodeImage;
 
 		return Inertia::render(
 			"InventoryItem/InventoryItemShow",
@@ -215,5 +220,21 @@ class InventoryItemController extends Controller {
 		}
 
 		return $item;
+	}
+
+	public function barcodesPDF() {
+		$inventoryItems = $this->inventoryItem->orderBy("barcode")->get();
+
+		$inventoryItems = $inventoryItems->map(function($inventoryItem) {
+			return [
+				"title"        => $inventoryItem->book->title,
+				"copyNo"       => $inventoryItem->copy_no,
+				"barcode"      => $inventoryItem->barcode,
+				"barcodeImage" => DNS1D::getBarcodePNG($inventoryItem->barcode,"C128")
+			];
+		});
+
+		$pdf = PDF::loadView('InventoryItem/barcodesPDF',array("inventoryItems" => $inventoryItems));
+		return $pdf->download("barcodes.pdf");
 	}
 }

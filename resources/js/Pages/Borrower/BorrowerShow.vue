@@ -23,6 +23,8 @@
 		email:     props.borrower.email,
 		barcode:   props.borrower.barcode
 	});
+
+	const barcodeImageSrc = "data:image/png;base64," + props.borrower.barcodeImage;
 </script>
 
 <template>
@@ -143,6 +145,10 @@
 						<div class="bg-red-200">
 							{{ errors.barcode }}
 						</div>
+					</div>
+
+					<div class="mt-2">
+						<img v-bind:src="barcodeImageSrc" />
 					</div>
 				</form>
 
