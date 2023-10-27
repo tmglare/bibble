@@ -48,6 +48,7 @@ Route::group(
 		Route::get("detailedCategories/{id}/reinstate",array(DetailedCategoryController::class,"reinstate"));
 		Route::resource("books",BookController::class);
 		Route::get("books/{id}/reinstate",array(BookController::class,"reinstate"));
+		Route::get("books/{id}/add-copy",array(BookController::class,"addCopy"));
 		Route::get("borrowers/barcodesPDF",array(BorrowerController::class,"barcodesPDF"));
 		Route::resource("borrowers",BorrowerController::class);
 		Route::get("borrowers/{id}/reinstate",array(BorrowerController::class,"reinstate"));

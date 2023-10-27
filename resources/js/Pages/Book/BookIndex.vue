@@ -61,6 +61,7 @@
 						<th class="text-left text-gray-600">Author</th>
 						<th class="text-left text-gray-600">ISBN</th>
 						<th class="text-left text-gray-600">Category</th>
+						<th class="text-left text-gray-600">Copies</th>
 					</tr>
 					<tr
 						v-for="(book,key) in books.data"
@@ -84,6 +85,7 @@
 						<td class="text-left">{{ book.author.name }}</td>
 						<td class="text-left">{{ book.isbn }}</td>
 						<td class="text-left">{{ book.detailed_category.name }}</td>
+						<td class="text-left">{{ book.copies }}</td>
 					</tr>
 				</table>
 				<Pagination :data="books" />

@@ -21,7 +21,8 @@
 		first_publication_date: props.book.first_publication_date,
 		edition_date:           props.book.edition_date,
 		author:                 props.book.author.name,
-		detailed_category:      props.book.detailed_category.name
+		detailed_category:      props.book.detailed_category.name,
+		copies:                 props.book.copies
 	});
 </script>
 
@@ -143,9 +144,20 @@
 							{{ errors.edition_date }}
 						</div>
 					</div>
+
+					<div>
+						<Label value="No of copies"/>
+						<Input
+							id="copies"
+							v-model="form.copies"
+							class="w-3/4 border-2"
+							disabled
+						/>
+					</div>
 				</form>
 
 				<div>
+					<Link :href="`/books/${book.id}/add-copy`" method="get" type="button" as="button" class="bg-yellow-200 w-40 border-yellow-300 border-2 rounded m-2">Add new copy</Link>
 					<Link :href="`/books/${book.id}/edit`" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">Edit</Link>
 					<Link href="/books" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">Index</Link>
 					<Link href="/books/create" method="get" type="button" as="button" class="bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2">New</Link>

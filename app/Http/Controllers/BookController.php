@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\Author;
 use App\Models\DetailedCategory;
@@ -19,9 +20,27 @@ class BookController extends Controller {
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index() {
-		$books = $this->book->withTrashed()->with("detailedCategory","author")->orderBy("title")->paginate(10);
+	public function index(Request $request) {
+		$page = $request->input("page");
+		$books = tap($this->book->withTrashed()->with("detailedCategory","author")->orderBy("title")->paginate(10))->map(
+			function($book) {
+				$copies = $book->inventoryItems()->count();
+				$book->copies = $copies;
+				return $book;
+			}
+		);
+/*
+		$books = $books->map(function($book) {
+			return $book;
+		});
 
+		$books = new LengthAwarePaginator(
+			$books,
+			25,
+			10,
+			1
+		);
+*/
 		return Inertia::render(
 			"Book/BookIndex",
 			array("books" => $books)
@@ -109,6 +128,8 @@ class BookController extends Controller {
 		} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 			return redirect()->back()->withErrors(__("Book cannot be found"));
 		}
+
+		$book->copies = $book->inventoryItems()->count();
 
 		return Inertia::render(
 			"Book/BookShow",
@@ -199,5 +220,32 @@ class BookController extends Controller {
 		$book = $this->book->withTrashed()->find($id);
 		$book->restore();
 		return redirect()->action("App\Http\Controllers\BookController@index");
+	}
+
+	public function addCopy($id) {
+		$book = $this->book->withTrashed()->find($id);
+
+		$maxCopyNo = $book->inventoryItems()->max("copy_no");
+		if (is_null($maxCopyNo)) { $maxCopyNo = 0; }
+		$newCopyNo = $maxCopyNo + 1;
+
+		$maxBarcode = InventoryItem::max("barcode");
+
+		if (! $maxBarcode) {
+			$maxBarcode = "T1000";
+		}
+
+		$newBarcode = ++$maxBarcode;
+
+		$inventoryItem = new InventoryItem;
+		$inventoryItem->book_id = $book->id;
+		$inventoryItem->copy_no = $newCopyNo;
+		$inventoryItem->barcode = $newBarcode;
+
+		$inventoryItem->save();
+
+		session()->flash("message",__("New library copy added"));
+
+		return redirect()->action("App\Http\Controllers\BookController@show",$id);
 	}
 }
