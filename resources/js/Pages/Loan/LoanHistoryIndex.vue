@@ -4,7 +4,7 @@
 	import Input from '@/Components/Input.vue';
 	import Button from '@/Components/Button.vue';
 	import Errors from '@/Components/Errors.vue';
-	import ColumnSort from '@/Components/ColumnSort.vue';
+	import LoanColumnSort from '@/Components/LoanColumnSort.vue';
 	import Pagination from '@/Components/Pagination.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
@@ -54,11 +54,11 @@
 						<th></th>
 						<th></th>
 						<th class="text-left text-gray-600">
-							Borrower <ColumnSort url="loans-incl-history" columnName="borrowers.surname"></ColumnSort>
+							Borrower <LoanColumnSort url="loans-incl-history" columnName="borrowers.surname"></LoanColumnSort>
 						</th>
 
 						<th class="text-left text-gray-600">
-							Title <ColumnSort url="loans-incl-history" columnName="books.title"></ColumnSort>
+							Title <LoanColumnSort url="loans-incl-history" columnName="books.title"></LoanColumnSort>
 						</th>
 
 						<th class="text-left text-gray-600">
@@ -70,16 +70,16 @@
 						</th>
 
 						<th class="text-left text-gray-600">
-							Borrowed on <ColumnSort url="loans-incl-history" columnName="borrowed_on"></ColumnSort>
+							Borrowed on <LoanColumnSort url="loans-incl-history" columnName="borrowed_on"></LoanColumnSort>
 						</th>
 
 						<th class="text-left text-gray-600">
-							Due back <ColumnSort url="loans-incl-history" columnName="due_back"></ColumnSort>
+							Due back <LoanColumnSort url="loans-incl-history" columnName="due_back"></LoanColumnSort>
 						</th>
 
 						<th class="text-left text-gray-600">
 							Returned on
-							<ColumnSort url="loans-incl-history" columnName="returned_on"></ColumnSort> </th>
+							<LoanColumnSort url="loans-incl-history" columnName="returned_on"></LoanColumnSort> </th>
 					</tr>
 					<tr
 						v-for="(loan,key) in loans.data"
