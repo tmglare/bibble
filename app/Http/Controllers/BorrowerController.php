@@ -19,8 +19,23 @@ class BorrowerController extends Controller {
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index() {
-		$borrowers = $this->borrower->withTrashed()->orderBy("surname")->orderBy("forenames")->paginate(10);
+	public function index(Request $request) {
+		$columnName = $request->input("columnName");
+		$direction  = $request->input("direction");
+
+		if (! $direction) { $direction = "asc"; }
+
+		if ($columnName) {
+			$sortColumn = $columnName;
+		} else {
+			$sortColumn = "";
+		}
+
+		if ($sortColumn) {
+			$borrowers = $this->borrower->withTrashed()->orderBy($sortColumn,$direction)->orderBy("surname")->orderBy("forenames")->paginate(10)->withQueryString();
+		} else {
+			$borrowers = $this->borrower->withTrashed()->orderBy("surname",$direction)->orderBy("forenames",$direction)->paginate(10)->withQueryString();
+		}
 
 		return Inertia::render(
 			"Borrower/BorrowerIndex",

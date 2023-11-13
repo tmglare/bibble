@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 
 use App\Models\InventoryItem;
 use App\Models\Book;
+use App\Models\Author;
 use Inertia\Inertia;
 use DNS1D;
 use PDF;
@@ -21,8 +22,37 @@ class InventoryItemController extends Controller {
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index() {
-		$inventoryItems = $this->inventoryItem->with("book","book.author")->withTrashed()->orderBy("book_id")->paginate(10);
+	public function index(Request $request) {
+		$columnName = $request->input("columnName");
+		$direction  = $request->input("direction");
+
+		if (! $direction) { $direction = "asc"; }
+
+		if ($columnName) {
+			$sortColumn = $columnName;
+		} else {
+			$sortColumn = "bookTitle";
+		}
+
+		if ($columnName == "authorName") {
+			$inventoryItems = $this->inventoryItem
+				->join("books","inventory_items.book_id",'=',"books.id")
+				->join("authors","books.author_id",'=',"authors.id")
+				->with("book","book.author")->withTrashed()
+				->orderBy("name",$direction)
+				->orderBy("title",$direction)
+				->orderBy("copy_no")
+				->paginate(10)->withQueryString();
+		} else {
+			$inventoryItems = $this->inventoryItem->with("book","book.author")->withTrashed()
+				->orderBy(
+					Book::select('title')
+          	->whereColumn('id', 'inventory_items.book_id')
+          	->limit(1),$direction
+				)
+				->orderBy("copy_no")
+				->paginate(10)->withQueryString();
+		}
 
 		return Inertia::render(
 			"InventoryItem/InventoryItemIndex",

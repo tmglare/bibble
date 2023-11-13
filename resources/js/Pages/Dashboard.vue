@@ -21,7 +21,7 @@
 											<h2 class="mb-4">Our Library</h2>
 											<img src="img/bookshelf.jpg" style="height:400px;margin:auto" />
 											<div class="mt-4">
-												<Link class="font-semibold text-blue-600 hover:underline" href="/loans/counter" title="Reception" method="get"><i class="fa-solid fa-user-tie fa-xl"></i></Link>
+												<Link class="font-semibold text-blue-600 hover:underline" href="/loans/counter" title="Customer desk" method="get"><i class="fa-solid fa-user-tie fa-xl"></i></Link>
 											</div>
                     </div>
                 </div>

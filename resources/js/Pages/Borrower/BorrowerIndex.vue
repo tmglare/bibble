@@ -4,6 +4,7 @@
 	import Input from '@/Components/Input.vue';
 	import Button from '@/Components/Button.vue';
 	import Pagination from '@/Components/Pagination.vue';
+	import ColumnSort from '@/Components/ColumnSort.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
 
@@ -54,14 +55,30 @@
 							<th></th>
 							<th></th>
 							<th></th>
-							<th class="text-left text-gray-600">Style</th>
-							<th class="text-left text-gray-600">Name</th>
-							<th class="text-left text-gray-600">Street</th>
-							<th class="text-left text-gray-600">Town</th>
-							<th class="text-left text-gray-600">Postcode</th>
-							<th class="text-left text-gray-600">Telephone</th>
-							<th class="text-left text-gray-600">Email</th>
-							<th class="text-left text-gray-600">Barcode</th>
+							<th class="text-left text-gray-600">
+								Style
+							</th>
+							<th class="text-left text-gray-600">
+								Name <ColumnSort url="borrowers" columnName=""></ColumnSort>
+							</th>
+							<th class="text-left text-gray-600">
+								Street
+							</th>
+							<th class="text-left text-gray-600">
+								Town <ColumnSort url="borrowers" columnName="town"></ColumnSort>
+							</th>
+							<th class="text-left text-gray-600">
+								Postcode <ColumnSort url="borrowers" columnName="postcode"></ColumnSort>
+							</th>
+							<th class="text-left text-gray-600">
+								Telephone
+							</th>
+							<th class="text-left text-gray-600">
+								Email
+							</th>
+							<th class="text-left text-gray-600">
+								Barcode <ColumnSort url="borrowers" columnName="barcode"></ColumnSort>
+							</th>
 						</tr>
 						<tr
 							v-for="(borrower,key) in borrowers.data"

@@ -3,6 +3,8 @@
 	import Label from '@/Components/Label.vue';
 	import Input from '@/Components/Input.vue';
 	import Button from '@/Components/Button.vue';
+	import Pagination from '@/Components/Pagination.vue';
+	import ColumnSort from '@/Components/ColumnSort.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
 
@@ -53,8 +55,12 @@
 						<th></th>
 						<th></th>
 						<th></th>
-						<th class="text-left text-gray-600">Department</th>
-						<th class="text-left text-gray-600">Category</th>
+						<th class="text-left text-gray-600">
+							Department <ColumnSort url="detailedCategories" columnName="generalCategoryName"></ColumnSort>
+						</th>
+						<th class="text-left text-gray-600">
+							Category <ColumnSort url="detailedCategories" columnName="detailedCategoryName"></ColumnSort>
+						</th>
 					</tr>
 					<tr
 						v-for="(detailedCategory,key) in detailedCategories.data"
@@ -77,6 +83,7 @@
 						<td class="text-left">{{ detailedCategory.name }}</td>
 					</tr>
 				</table>
+				<Pagination :data="detailedCategories" />
 			</div>
 
 			<div>

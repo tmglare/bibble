@@ -17,8 +17,32 @@ class DetailedCategoryController extends Controller {
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index() {
-		$detailedCategories = $this->detailedCategory->with("generalCategory")->withTrashed()->orderBy("name")->paginate(10);
+	public function index(Request $request) {
+		$columnName = $request->input("columnName");
+		$direction  = $request->input("direction");
+
+		if (! $direction) { $direction = "asc"; }
+
+		if ($columnName) {
+			$sortColumn = $columnName;
+		} else {
+			$sortColumn = "detailedCategoryName";
+		}
+
+		if ($columnName == "generalCategoryName") {
+			$detailedCategories = $this->detailedCategory->with("generalCategory")->withTrashed()
+				->orderBy(
+					GeneralCategory::select('name')
+           ->whereColumn('id', 'detailed_categories.general_category_id')
+           ->limit(1),$direction
+				)
+				->orderBy("name")
+				->paginate(10)->withQueryString();
+		} else {
+			$detailedCategories = $this->detailedCategory->with("generalCategory")->withTrashed()
+				->orderBy("name",$direction)
+				->paginate(10)->withQueryString();
+		}
 
 		return Inertia::render(
 			"DetailedCategory/DetailedCategoryIndex",

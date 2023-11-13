@@ -5,6 +5,7 @@
 	import Button from '@/Components/Button.vue';
 	import Errors from '@/Components/Errors.vue';
 	import Pagination from '@/Components/Pagination.vue';
+	import ColumnSort from '@/Components/ColumnSort.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
 
@@ -56,11 +57,17 @@
 						<th></th>
 						<th></th>
 						<th></th>
-						<th class="text-left text-gray-600">Title</th>
+						<th class="text-left text-gray-600">
+							Title <ColumnSort url="books" columnName="title"></ColumnSort>
+						</th>
 						<th class="text-left text-gray-600">Edition</th>
-						<th class="text-left text-gray-600">Author</th>
+						<th class="text-left text-gray-600">
+							Author <ColumnSort url="books" columnName="author.name"></ColumnSort>
+						</th>
 						<th class="text-left text-gray-600">ISBN</th>
-						<th class="text-left text-gray-600">Category</th>
+						<th class="text-left text-gray-600">
+							Category <ColumnSort url="books" columnName="detailedCategory.name"></ColumnSort>
+						</th>
 						<th class="text-left text-gray-600">Copies</th>
 					</tr>
 					<tr

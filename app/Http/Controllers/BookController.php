@@ -21,26 +21,75 @@ class BookController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function index(Request $request) {
-		$page = $request->input("page");
-		$books = tap($this->book->withTrashed()->with("detailedCategory","author")->orderBy("title")->paginate(10))->map(
-			function($book) {
-				$copies = $book->inventoryItems()->count();
-				$book->copies = $copies;
-				return $book;
-			}
-		);
-/*
-		$books = $books->map(function($book) {
-			return $book;
-		});
+		$columnName = $request->input("columnName");
+		$direction  = $request->input("direction");
 
-		$books = new LengthAwarePaginator(
-			$books,
-			25,
-			10,
-			1
-		);
-*/
+		if (! $direction) { $direction = "asc"; }
+
+		if ($columnName) {
+			$sortColumn = $columnName;
+		} else {
+			$sortColumn = "title";
+		}
+
+		if ($sortColumn == "detailedCategory.name") {
+			$books = tap(
+				$this->book->withTrashed()->with("detailedCategory","author")
+					->orderBy(
+						DetailedCategory::select('name')
+            ->whereColumn('id', 'books.detailed_category_id')
+            ->limit(1),$direction
+					)
+					->orderBy("title")
+					->paginate(10)->withQueryString()
+			)->map(
+				function($book) {
+					$copies = $book->inventoryItems()->count();
+					$book->copies = $copies;
+					return $book;
+				}
+			);
+		} elseif ($sortColumn == "author.name") {
+			$books = tap(
+				$this->book->withTrashed()->with("detailedCategory","author")
+					->orderBy(
+						Author::select('name')
+            ->whereColumn('id', 'books.author_id')
+            ->limit(1),$direction
+					)
+					->orderBy(
+						"title"
+					)
+					->paginate(10)->withQueryString()
+			)->map(
+				function($book) {
+					$copies = $book->inventoryItems()->count();
+					$book->copies = $copies;
+					return $book;
+				}
+			);
+		} else {
+			$books = tap(
+				$this->book->withTrashed()->with("detailedCategory","author")
+					->orderBy(
+						"title",$direction
+					)
+					->orderBy(
+						Author::select('name')
+            ->whereColumn('id', 'books.author_id')
+            ->orderBy('name')
+            ->limit(1)
+					)
+					->paginate(10)->withQueryString()
+			)->map(
+				function($book) {
+					$copies = $book->inventoryItems()->count();
+					$book->copies = $copies;
+					return $book;
+				}
+			);
+		}
+
 		return Inertia::render(
 			"Book/BookIndex",
 			array("books" => $books)

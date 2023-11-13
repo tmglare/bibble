@@ -17,8 +17,19 @@ class AuthorController extends Controller {
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index() {
-		$authors = $this->author->withTrashed()->orderBy("name")->paginate(10);
+	public function index(Request $request) {
+		$columnName = $request->input("columnName");
+		$direction  = $request->input("direction");
+
+		if (! $direction) { $direction = "asc"; }
+
+		if ($columnName) {
+			$sortColumn = $columnName;
+		} else {
+			$sortColumn = "name";
+		}
+
+		$authors = $this->author->withTrashed()->orderBy($sortColumn,$direction)->paginate(10)->withQueryString();
 
 		return Inertia::render(
 			"Author/AuthorIndex",

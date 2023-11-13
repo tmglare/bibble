@@ -5,6 +5,7 @@
 	import Button from '@/Components/Button.vue';
 	import Errors from '@/Components/Errors.vue';
 	import Pagination from '@/Components/Pagination.vue';
+	import ColumnSort from '@/Components/ColumnSort.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
 
@@ -60,7 +61,9 @@
 							<th></th>
 							<th></th>
 							<th></th>
-							<th class="text-left text-gray-600">Name</th>
+							<th class="text-left text-gray-600">
+								Name <ColumnSort url="authors" columnName="name"></ColumnSort>
+							</th>
 						</tr>
 						<tr
 							v-for="(author,key) in authors.data"

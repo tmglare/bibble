@@ -4,6 +4,7 @@
 	import Input from '@/Components/Input.vue';
 	import Button from '@/Components/Button.vue';
 	import Pagination from '@/Components/Pagination.vue';
+	import ColumnSort from '@/Components/ColumnSort.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
 
@@ -54,8 +55,12 @@
 						<th></th>
 						<th></th>
 						<th></th>
-						<th class="text-left text-gray-600">Title</th>
-						<th class="text-left text-gray-600">Author</th>
+						<th class="text-left text-gray-600">
+							Title <ColumnSort url="inventoryItems" columnName="bookTitle"></ColumnSort>
+						</th>
+						<th class="text-left text-gray-600">
+							Author <ColumnSort url="inventoryItems" columnName="authorName"></ColumnSort>
+						</th>
 						<th class="text-left text-gray-600">Copy no</th>
 						<th class="text-left text-gray-600">Barcode</th>
 					</tr>
