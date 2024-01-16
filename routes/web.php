@@ -55,6 +55,7 @@ Route::group(
 		Route::get("inventoryItems/barcodesPDF",array(InventoryItemController::class,"barcodesPDF"));
 		Route::resource("inventoryItems",InventoryItemController::class);
 		Route::get("inventoryItems/{id}/reinstate",array(InventoryItemController::class,"reinstate"));
+		Route::get("loans/{id}/overdue",array(LoanController::class,"overdue"));
 		Route::get("loans/return",array(LoanController::class,"return"));
 		Route::get("loans/counter",array(LoanController::class,"counter"));
 		Route::post("loans/processReturn",array(LoanController::class,"processReturn"));

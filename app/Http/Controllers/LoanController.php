@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Mail\SentMessage;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -9,6 +10,7 @@ use App\Models\Book;
 use App\Models\Loan;
 use App\Models\Borrower;
 use App\Models\InventoryItem;
+use App\Services\Loan\OverdueService;
 
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -196,7 +198,8 @@ class LoanController extends Controller {
 			return redirect()->back()->withErrors(__("Loan cannot be found"));
 		}
 
-		$borrowers = Borrower::select("id","name")->orderBy("name")->get();
+		// $borrowers = Borrower::select("id","name")->orderBy("name")->get();
+		$borrowers = Borrower::select("id","forenames","surname")->orderBy("surname")->orderBy("forenames")->get();
 		$inventoryItems = InventoryItem::with("book")->select("id","copy_no","book_id")->whereDoesntHave("loans",function (Builder $query) { $query->whereNull("returned_on");})->get();
 
 		return Inertia::render(
@@ -292,5 +295,14 @@ class LoanController extends Controller {
 				"inventoryItemsOnLoan" => $inventoryItemsOnLoan
 			)
 		);
+	}
+
+	public function overdue($id, OverdueService $overdueService) {
+		try {
+			$sentEmail = $overdueService->sendEmail($id);
+		} catch (\Exception $e) {
+			return redirect()->back()->withErrors(__("Email failed - ") . $e->getMessage());
+		}
+		return redirect()->action("App\Http\Controllers\LoanController@index");
 	}
 }

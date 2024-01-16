@@ -32,6 +32,10 @@
 		if (! confirm(`Do you wish to delete this loan?`)) return false;
 		Inertia.delete(`/loans/${id}`);
 	}
+
+	const sendReminder = (id) => {
+		Inertia.get(`/loans/${id}/overdue`);
+	}
 </script>
 
 <template>
@@ -101,6 +105,16 @@
 						<td class="text-left">{{ formatDate(loan.borrowed_on) }}</td>
 						<td class="text-left">{{ formatDate(loan.due_back) }}</td>
 						<td class="text-left">{{ formatDate(loan.returned_on) }}</td>
+						<td class="text-left">
+							<form
+								v-if="loan.overdue"
+								class= "text-red-600"
+								v-on:submit.prevent="sendReminder(`${loan.loan_id}`)"
+							>
+								Overdue
+								<button type="submit" class="rounded px-1 bg-red-300 text-black">Send reminder</button>
+							</form>
+						</td>
 					</tr>
 				</table>
 <pre style="display:none">

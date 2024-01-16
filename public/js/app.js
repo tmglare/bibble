@@ -24731,11 +24731,16 @@ __webpack_require__.r(__webpack_exports__);
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_9__.Inertia["delete"]("/loans/".concat(id));
     };
 
+    var sendReminder = function sendReminder(id) {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_9__.Inertia.get("/loans/".concat(id, "/overdue"));
+    };
+
     var __returned__ = {
       props: props,
       zebra: zebra,
       formatDate: formatDate,
       deleteRecord: deleteRecord,
+      sendReminder: sendReminder,
       BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
       Label: _Components_Label_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
       Input: _Components_Input_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -32710,22 +32715,37 @@ var _hoisted_31 = {
   "class": "text-left"
 };
 var _hoisted_32 = {
+  "class": "text-left"
+};
+var _hoisted_33 = ["onSubmit"];
+
+var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Overdue ");
+
+var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "submit",
+  "class": "rounded px-1 bg-red-300 text-black"
+}, "Send reminder", -1
+/* HOISTED */
+);
+
+var _hoisted_36 = [_hoisted_34, _hoisted_35];
+var _hoisted_37 = {
   style: {
     "display": "none"
   }
 };
-var _hoisted_33 = {
+var _hoisted_38 = {
   style: {
     "display": "none"
   }
 };
-var _hoisted_34 = {
+var _hoisted_39 = {
   style: {
     "display": "none"
   }
 };
 
-var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("New");
+var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("New");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("pre", _hoisted_1, "\t" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.loans) + "\n", 1
@@ -32807,18 +32827,26 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.formatDate(loan.returned_on)), 1
         /* TEXT */
-        )]);
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_32, [loan.overdue ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
+          key: 0,
+          "class": "text-red-600",
+          onSubmit: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+            return $setup.sendReminder("".concat(loan.loan_id));
+          }, ["prevent"])
+        }, _hoisted_36, 40
+        /* PROPS, HYDRATE_EVENTS */
+        , _hoisted_33)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
       }), 256
       /* UNKEYED_FRAGMENT */
-      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("pre", _hoisted_32, "\t\t" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(JSON.stringify($props.loans.links, null, 2)) + "\n", 1
+      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("pre", _hoisted_37, "\t\t" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(JSON.stringify($props.loans.links, null, 2)) + "\n", 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Pagination"], {
         data: $props.loans
       }, null, 8
       /* PROPS */
-      , ["data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("pre", _hoisted_33, "\t" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.loans.links) + "\n", 1
+      , ["data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("pre", _hoisted_38, "\t" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.loans.links) + "\n", 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("pre", _hoisted_34, "\t" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.borrowerId) + "\n", 1
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("pre", _hoisted_39, "\t" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.borrowerId) + "\n", 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
         href: "/loans/create",
@@ -32828,7 +32856,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "bg-yellow-200 w-20 border-yellow-300 border-2 rounded m-2"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_35];
+          return [_hoisted_40];
         }),
         _: 1
         /* STABLE */

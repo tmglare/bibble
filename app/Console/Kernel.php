@@ -15,7 +15,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // $schedule->command('inspire')->everyMinute()->sendOutputTo("storage/logs/output.log");
+        /*
+				$schedule->call(function() {
+					\Illuminate\Support\Facades\Log::info("Some message");
+				})->everyMinute();
+				*/
+				$schedule->call(function() {
+					$overdueService = new \App\Services\Loan\OverdueService;
+					$overdueService->sendAllEmails();
+				})->dailyAt("09:58");
     }
 
     /**
