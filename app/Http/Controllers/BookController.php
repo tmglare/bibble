@@ -49,11 +49,11 @@ class BookController extends Controller {
 					return $book;
 				}
 			);
-		} elseif ($sortColumn == "author.name") {
+		} elseif ($sortColumn == "author.ordered_name") {
 			$books = tap(
 				$this->book->withTrashed()->with("detailedCategory","author")
 					->orderBy(
-						Author::select('name')
+						Author::select('ordered_name')
             ->whereColumn('id', 'books.author_id')
             ->limit(1),$direction
 					)
@@ -102,7 +102,7 @@ class BookController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function create() {
-		$authors = Author::select("id","name")->orderBy("name")->get();
+		$authors = Author::select("id","name")->orderBy("name")->get()->pluck("name");
 
 		$detailedCategories = DetailedCategory::select("id","name")->orderBy("name")->get();
 
@@ -129,7 +129,6 @@ class BookController extends Controller {
 			$request,
 			array(
 				"title"                  => "required",
-				"author_id"              => "required",
 				"detailed_category_id"   => "required",
 				"isbn"                   => "required|unique:books",
 				"publisher"              => "required"
@@ -137,6 +136,28 @@ class BookController extends Controller {
 		);
 
 		$data = $request->all();
+
+		try {
+			$authorName = $request->input("author_name");
+		} catch (\Exception $e) {
+			return redirect()->back()->withErrors(__("Author not specified"));
+		}
+
+		$author = Author::where("name",$authorName)->first();
+
+		if (! $author) {
+			preg_match("/^(.*)\s+(\w+)$/",$authorName,$matches);
+			if (sizeof($matches) > 2) {
+				$forenames = $matches[1];
+				$surname = $matches[2];
+				$orderedName = "$surname, $forenames";
+			} else {
+				$orderedName = $authorName;
+			}
+			$author = Author::create(["name" => $authorName, "ordered_name" => $orderedName]);
+		}
+
+		$data["author_id"] = $author->id;
 
 		$book = $this->book->create($data);
 

@@ -39,6 +39,7 @@ Route::get('/dashboard', function () {
 Route::group(
 	array("middleware" => array("auth")),
 	function() {
+		Route::get("authors/names",array(AuthorController::class,"names"));
 		Route::resource("authors",AuthorController::class);
 		Route::get("authors/{id}/reinstate",array(AuthorController::class,"reinstate"));
 		Route::get("downloadPDF/{id}",array(AuthorController::class,'downloadPDF'));

@@ -1,11 +1,19 @@
 <script setup>
+	import $ from 'jquery';
+	require("jquery-ui/ui/widgets/autocomplete.js");
+	import "jquery-ui/themes/base/theme.css";
+	import "jquery-ui/themes/base/autocomplete.css";
 	import { useForm } from '@inertiajs/inertia-vue3';
+	import { computed } from 'vue';
+	import { ref } from 'vue';
+	import { watch } from 'vue';
 	import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 	import Label from '@/Components/Label.vue';
 	import Input from '@/Components/Input.vue';
 	import Button from '@/Components/Button.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
+	import { Inertia } from '@inertiajs/inertia';
 
 	const props = defineProps({
 			errors: Object,
@@ -20,11 +28,51 @@
 		isbn: "",
 		edition: "",
 		author_id: "",
+		author_name: "",
 		detailed_category_id: "",
 		first_publication_date: "",
 		edition_date: "",
 		add_inventory_item: 0
 	});
+
+	let searchAuthorName = ref('');
+
+	const searchAuthors = computed(
+		() => {
+			if (searchAuthorName.value === '') {
+				return [];
+			}
+			return props.authors.filter(
+				author => {
+					if (author.toLowerCase().includes(searchAuthorName.value.toLowerCase())) {
+						return true;
+					}
+					return false;
+				}
+			)
+		}
+	);
+
+	let selectedAuthor = ref('');
+
+	const selectAuthor = (author) => {
+		searchAuthorName.value = author;
+		selectedAuthor.value = author;
+	}
+
+	watch(
+		selectedAuthor,
+		(value) => {
+			form.author_name = value;
+		}
+	);
+
+	watch(
+		searchAuthorName,
+		(value) => {
+			form.author_name = value;
+		}
+	);
 </script>
 
 <template>
@@ -60,24 +108,36 @@
 						</div>
 					</div>
 
+					<Input type="hidden" v-model="form.author_name"/>
+
 					<div>
-						<Label value="Author"/>
-						<select
-							id="author"
-							v-model="form.author_id"
+						<Label value="Author name"/>
+						<Input
+							id="searchAuthorName"
+							v-model="searchAuthorName"
 							class="w-3/4 border-2"
+							maxlength="80"
+							autocomplete="off"
 							required
-						>
-							<option value="">
-								Select an author
-							</option>
-							<option v-for="(author) in authors" :value="author.id">
-								{{ author.name }}
-							</option>
-						</select>
-						<div class="bg-red-200">
-							{{ errors.author_id }}
-						</div>
+						/>
+					</div>
+
+					<div
+						v-if="searchAuthors.length && (selectedAuthor != searchAuthorName)"
+						class="border border-black p-2 bg-gray-200"
+					>
+						<ul>
+							<li>
+								Showing {{ searchAuthors.length }} of {{ props.authors.length }}
+							</li>
+							<li
+								v-for="author in searchAuthors"
+								v-on:click="selectAuthor(author)"
+								v-if="selectedAuthor != searchAuthorName"
+							>
+								{{ author }}
+							</li>
+						</ul>
 					</div>
 
 					<div>

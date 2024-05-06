@@ -10,6 +10,7 @@ use App\Models\Book;
 use App\Models\Author;
 use Inertia\Inertia;
 use DNS1D;
+use DNS2D;
 use PDF;
 
 class InventoryItemController extends Controller {
@@ -260,11 +261,14 @@ class InventoryItemController extends Controller {
 				"title"        => $inventoryItem->book->title,
 				"copyNo"       => $inventoryItem->copy_no,
 				"barcode"      => $inventoryItem->barcode,
+				// "barcodeImage" => DNS2D::getBarcodePNG($inventoryItem->barcode,"QRCODE")
 				"barcodeImage" => DNS1D::getBarcodePNG($inventoryItem->barcode,"C128")
 			];
 		});
 
 		$pdf = PDF::loadView('InventoryItem/barcodesPDF',array("inventoryItems" => $inventoryItems));
+		$pdf->setOptions(["dpi" => 96]);
+
 		return $pdf->download("barcodes.pdf");
 	}
 }

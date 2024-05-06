@@ -26,7 +26,7 @@ class AuthorController extends Controller {
 		if ($columnName) {
 			$sortColumn = $columnName;
 		} else {
-			$sortColumn = "name";
+			$sortColumn = "ordered_name";
 		}
 
 		$authors = $this->author->withTrashed()->orderBy($sortColumn,$direction)->paginate(10)->withQueryString();
@@ -167,5 +167,15 @@ class AuthorController extends Controller {
 		$author = $this->author->withTrashed()->find($id);
 		$author->restore();
 		return redirect()->action("App\Http\Controllers\AuthorController@index");
+	}
+
+	public function names(Request $request) {
+		// if ($request->has("term")) {
+			// $searchExpr = $request->input("term");
+			// $names = $this->author->where("ordered_name","LIKE","$searchExpr%")->get()->pluck("name");
+			$names = $this->author->get()->pluck("name");
+			return $names;
+		// }
+		// return array();
 	}
 }

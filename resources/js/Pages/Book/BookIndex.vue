@@ -62,7 +62,7 @@
 						</th>
 						<th class="text-left text-gray-600">Edition</th>
 						<th class="text-left text-gray-600">
-							Author <ColumnSort url="books" columnName="author.name"></ColumnSort>
+							Author <ColumnSort url="books" columnName="author.ordered_name"></ColumnSort>
 						</th>
 						<th class="text-left text-gray-600">ISBN</th>
 						<th class="text-left text-gray-600">
@@ -89,7 +89,7 @@
 						</td>
 						<td class="text-left">{{ book.title }}</td>
 						<td class="text-left">{{ book.edition }}</td>
-						<td class="text-left">{{ book.author.name }}</td>
+						<td class="text-left">{{ book.author.ordered_name }}</td>
 						<td class="text-left">{{ book.isbn }}</td>
 						<td class="text-left">{{ book.detailed_category.name }}</td>
 						<td class="text-left">{{ book.copies }}</td>
