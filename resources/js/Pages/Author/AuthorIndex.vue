@@ -54,7 +54,7 @@
 
 		<div class="flex flex-col justify-center items-left pt-6 pl-6 sm:pt-0 bg-gray-100">
 			<Errors v-bind:errors="errors"></Errors>
-			<div class="w-full sm:max-w-xl mt-6 px-6 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+			<div class="w-3/4 mt-6 px-6 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 				<div class="mt-4 mb-2 p-2" style="outline: 2px solid #888888">
 					<table class="w-full">
 						<tr>
@@ -63,6 +63,9 @@
 							<th></th>
 							<th class="text-left text-gray-600">
 								Name <ColumnSort url="authors" columnName="name"></ColumnSort>
+							</th>
+							<th class="text-left text-gray-600">
+								Name (surname first) <ColumnSort url="authors" columnName="ordered_name"></ColumnSort>
 							</th>
 						</tr>
 						<tr
@@ -83,6 +86,7 @@
 								</form>
 							</td>
 							<td class="text-left">{{ author.name }}</td>
+							<td class="text-left">{{ author.ordered_name }}</td>
 						</tr>
 					</table>
 					<Pagination :data="authors" />

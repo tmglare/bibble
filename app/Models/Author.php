@@ -22,14 +22,24 @@ class Author extends Model {
 	);
 
 	protected $fillable = array(
-		"name"
+		"name",
+		"ordered_name"
 	);
 
 	protected $casts = array(
-		"name" => "string"
+		"name" => "string",
+		"ordered_name" => "string"
 	);
 
 	public function books() {
 		return $this->hasMany("\App\Models\Book");
+	}
+
+	public function setOrderedNameAttribute($value) {
+		if ($value) {
+			$this->attributes["ordered_name"] = $value;
+		} else {
+			$this->attributes["ordered_name"] = "";
+		}
 	}
 }

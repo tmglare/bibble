@@ -13,7 +13,8 @@
 	});
 
 	const form = useForm({
-		name: props.author.name
+		name: props.author.name,
+		ordered_name: props.author.ordered_name
 	});
 </script>
 
@@ -40,6 +41,16 @@
 								/>
 								<div class="bg-red-200">
 									{{ errors.name }}
+								</div>
+								<Label value="Name (surname first)"/>
+								<Input
+									id="ordered_name"
+									v-model="form.ordered_name"
+									class="w-3/4 border-2"
+									disabled
+								/>
+								<div class="bg-red-200">
+									{{ errors.ordered_name }}
 								</div>
 							</div>
 						</form>
