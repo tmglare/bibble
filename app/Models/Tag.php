@@ -20,7 +20,8 @@ class Tag extends Model {
 	);
 
 	protected $casts = array(
-		"name" => "string"
+		"name" => "string",
+		"deleted_at" => "datetime"
 	);
 
 	public function books() {

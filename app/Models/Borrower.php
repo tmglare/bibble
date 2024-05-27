@@ -10,9 +10,9 @@ class Borrower extends Model {
 	use HasFactory;
 	use SoftDeletes;
 
-	protected $dates = array(
-		"deleted_at"
-	);
+	// protected $dates = array(
+		// "deleted_at"
+	// );
 
 	protected $guarded = array(
 		"id",
@@ -42,7 +42,8 @@ class Borrower extends Model {
 		"postcode"  => "string",
 		"telephone" => "string",
 		"email"     => "string",
-		"barcode"   => "string"
+		"barcode"   => "string",
+		"deleted_at" => "datetime"
 	);
 
 	protected $appends = array(

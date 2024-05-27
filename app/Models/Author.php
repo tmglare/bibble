@@ -10,9 +10,9 @@ class Author extends Model {
 	use HasFactory;
 	use SoftDeletes;
 
-	protected $dates = array(
-		"deleted_at"
-	);
+	// protected $dates = array(
+		// "deleted_at"
+	// );
 
 	protected $guarded = array(
 		"id",
@@ -28,7 +28,8 @@ class Author extends Model {
 
 	protected $casts = array(
 		"name" => "string",
-		"ordered_name" => "string"
+		"ordered_name" => "string",
+		"deleted_at" => "datetime"
 	);
 
 	public function books() {

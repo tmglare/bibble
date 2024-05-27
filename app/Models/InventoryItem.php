@@ -10,9 +10,9 @@ class InventoryItem extends Model {
 	use HasFactory;
 	use SoftDeletes;
 
-	protected $dates = array(
-		"deleted_at"
-	);
+	// protected $dates = array(
+		// "deleted_at"
+	// );
 
 	protected $guarded = array(
 		"id",
@@ -31,7 +31,8 @@ class InventoryItem extends Model {
 	protected $casts = array(
 		"copy_no" => "integer",
 		"notes"   => "string",
-		"barcode" => "string"
+		"barcode" => "string",
+		"deleted_at" => "datetime"
 	);
 
 	public function book() {

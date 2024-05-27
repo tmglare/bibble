@@ -10,9 +10,9 @@ class DetailedCategory extends Model {
 	use HasFactory;
 	use SoftDeletes;
 
-	protected $dates = array(
-		"deleted_at"
-	);
+	// protected $dates = array(
+		// "deleted_at"
+	// );
 
 	protected $guarded = array(
 		"id",
@@ -27,7 +27,8 @@ class DetailedCategory extends Model {
 	);
 
 	protected $casts = array(
-		"name" => "string"
+		"name" => "string",
+		"deleted_at" => "datetime"
 	);
 
 	public function generalCategory() {
