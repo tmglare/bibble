@@ -230,13 +230,13 @@ class InventoryItemController extends Controller {
 		if (! $barcode) {
 			return null;
 		}
-		$inventoryItemId = $this->inventoryItem->where("barcode",$barcode)->value("id");
+		$inventoryItem = $this->inventoryItem->with("Book")->where("barcode",$barcode)->first();
 
-		if (! $inventoryItemId) {
+		if (! $inventoryItem) {
 			return null;
 		}
 
-		return $inventoryItemId;
+		return $inventoryItem;
 	}
 
 	public function getItemByBarcode($barcode = null) {

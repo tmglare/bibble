@@ -7,7 +7,10 @@
 	import Button from '@/Components/Button.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
 	import { Link } from '@inertiajs/inertia-vue3';
+	import { computed } from 'vue';
 	import { ref } from 'vue';
+	import { watch } from 'vue';
+	import { Inertia } from '@inertiajs/inertia';
 
 	const props = defineProps({
 			errors: Object,
@@ -25,12 +28,17 @@
 	});
 
 	const ibcError = ref("");
+	const noItemInBarcodeClass = ref("hidden");
+	const noItemOutBarcodeClass = ref("hidden");
+	const noBorrowerBarcodeClass = ref("hidden");
 
 	const form2 = useForm({
 		borrowerBarcode:   "",
 		itemBarcode:       "",
 		borrower_id:       "",
 		inventory_item_id: "",
+		borrowerName:      "",
+		itemName:          "",
 		borrowed_on:       props.loan.borrowed_on.split("T")[0],
 		due_back:          props.loan.due_back.split("T")[0]
 	});
@@ -39,14 +47,17 @@
 		let barcode = document.getElementById("borrowerBarcode").value;
 
 		axios.get(
-			`/borrowers/byBarcode/${barcode}`
+			`/borrowers/getBorrowerByBarcode/${barcode}`
 		).then(
 			(response) => {
-				form2.borrower_id = response.data;
+				form2.borrower_id = response.data.id;
+				form2.borrowerName = response.data.name;
+				this.searchBorrowerName = "";
+				this.selectedBorrowerName = "";
+				this.hasBorrowerBarcode();
 			}
 		);
 	}
-
 
 	function readItemInBarcode() {
 		let barcode = document.getElementById("itemInBarcode").value;
@@ -55,9 +66,38 @@
 			`/inventoryItems/byBarcode/${barcode}`
 		).then(
 			(response) => {
-				form1.inventory_item_id = response.data;
+				form1.inventory_item_id = response.data.id;
+				form1.itemName = response.data.book.title;
+				form1.copyNo = response.data.copy_no;
+				this.searchItemOnLoanTitle = "";
+				this.selectedItemOnLoanTitle = "";
+				this.hasItemInBarcode();
 			}
 		);
+	}
+
+	function noItemInBarcode() {
+		noItemInBarcodeClass.value = "";
+	}
+
+	function hasItemInBarcode() {
+		noItemInBarcodeClass.value = "hidden";
+	}
+
+	function noItemOutBarcode() {
+		noItemOutBarcodeClass.value = "";
+	}
+
+	function hasItemOutBarcode() {
+		noItemOutBarcodeClass.value = "hidden";
+	}
+
+	function noBorrowerBarcode() {
+		noBorrowerBarcodeClass.value = "";
+	}
+
+	function hasBorrowerBarcode() {
+		noBorrowerBarcodeClass.value = "hidden";
 	}
 
 	function readItemOutBarcode() {
@@ -67,7 +107,12 @@
 			`/inventoryItems/byBarcode/${barcode}`
 		).then(
 			(response) => {
-				form2.inventory_item_id = response.data;
+				form2.inventory_item_id = response.data.id;
+				form2.itemName = response.data.book.title;
+				form2.copyNo = response.data.copy_no;
+				this.searchItemOffLoanTitle = "";
+				this.selectedItemOffLoanTitle = "";
+				this.hasItemOutBarcode();
 			}
 		);
 	}
@@ -107,6 +152,109 @@
 				ibcError.value = "Invalid code";
 				// itemBarcode.focus();
 				return false;
+			}
+		);
+	}
+
+	let searchItemOnLoanTitle = ref('');
+	let selectedItemOnLoanTitle = ref('');
+
+	let searchItemOffLoanTitle = ref('');
+	let selectedItemOffLoanTitle = ref('');
+
+	let searchBorrowerName = ref('');
+	let selectedBorrowerName = ref('');
+
+	const selectItemIn = (item) => {
+		selectedItemOnLoanTitle.value = item.book.title;
+		searchItemOnLoanTitle.value = item.book.title;
+		form1.itemBarcode = item.barcode;
+		
+		axios.get(
+			`/inventoryItems/byBarcode/${item.barcode}`
+		).then(
+			(response) => {
+				form1.inventory_item_id = response.data.id;
+				form1.itemName = response.data.book.title;
+				form1.copyNo = response.data.copy_no;
+			}
+		);
+	}
+
+	const searchItemsOnLoan = computed(
+		() => {
+			if (searchItemOnLoanTitle === '') {
+				return [];
+			}
+			return props.inventoryItemsOnLoan.filter (
+				itemOnLoan => {
+					if (itemOnLoan.book.title.toLowerCase().includes(searchItemOnLoanTitle.value.toLowerCase())) {
+						return true;
+					}
+					return false;
+				}
+			);
+		}
+	);
+
+	const selectItemOut = (item) => {
+		selectedItemOffLoanTitle.value = item.book.title;
+		searchItemOffLoanTitle.value = item.book.title;
+		form2.itemBarcode = item.barcode;
+		
+		axios.get(
+			`/inventoryItems/byBarcode/${item.barcode}`
+		).then(
+			(response) => {
+				form2.inventory_item_id = response.data.id;
+				form2.itemName = response.data.book.title;
+				form2.copyNo = response.data.copy_no;
+			}
+		);
+	}
+	const searchItemsOffLoan = computed(
+		() => {
+			if (searchItemOffLoanTitle === '') {
+				return [];
+			}
+			return props.inventoryItemsOffLoan.filter (
+				itemOffLoan => {
+					if (itemOffLoan.book.title.toLowerCase().includes(searchItemOffLoanTitle.value.toLowerCase())) {
+						return true;
+					}
+					return false;
+				}
+			);
+		}
+	);
+
+	const searchBorrowers = computed(
+		() => {
+			if (searchBorrowerName === '') {
+				return [];
+			}
+			return props.borrowers.filter (
+				borrower => {
+					if (borrower.name.toLowerCase().includes(searchBorrowerName.value.toLowerCase())) {
+						return true;
+					}
+					return false;
+				}
+			);
+		}
+	);
+
+	const selectBorrower = (borrower) => {
+		selectedBorrowerName.value = borrower.name;
+		searchBorrowerName.value = borrower.name;
+		form2.borrowerBarcode = borrower.barcode;
+		
+		axios.get(
+			`/borrowers/getBorrowerByBarcode/${borrower.barcode}`
+		).then(
+			(response) => {
+				form2.borrower_id = response.data.id;
+				form2.borrowerName = response.data.name;
 			}
 		);
 	}
@@ -152,26 +300,76 @@
 								</div>
 							</div>
 
-							<div class="mt-1">
-								<!-- <Label value="Book"/> -->
-								<select
-									id="book"
-									v-model="form1.inventory_item_id"
-									v-on:click="form1.itemBarcode = '';"
-									class="w-3/4 border-2"
-									required
+							<div>
+								<button
+									type="button"
+									class="text-xs text-blue-600"
+									v-on:click="noItemInBarcode"
 								>
-									<option value="" selected>
-										Barcode missing/damaged?
-									</option>
-									<option v-for="(inventoryItem) in inventoryItemsOnLoan" :value="inventoryItem.id">
-										{{ '[' + inventoryItem.barcode + '] ' + inventoryItem.book.title + ' (copy ' + inventoryItem.copy_no + ')' }}
-									</option>
-								</select>
+									No barcode?
+								</button>
+							</div>
 
-								<div class="bg-red-200">
-									{{ errors.inventoryitem_id }}
-								</div>
+							<div v-bind:class="noItemInBarcodeClass">
+								<Label value="Search title"/>
+								<Input
+									id="searchItemOnLoanTitle"
+									v-model="searchItemOnLoanTitle"
+									class="w-3/4 border-2"
+									max-length="100"
+									autocomplete="off"
+								/>
+							</div>
+
+							<div
+								v-if="searchItemsOnLoan.length && (selectedItemOnLoanTitle != searchItemOnLoanTitle)"
+								class="border border-black p-2 bg-gray-200"
+							>
+								<ul>
+									<li>
+										Showing {{ searchItemsOnLoan.length }} of {{ props.inventoryItemsOnLoan.length }}
+									</li>
+									<li
+										v-for="item in searchItemsOnLoan"
+										v-on:click="selectItemIn(item)"
+										v-if="selectedItemOnLoanTitle != searchItemOnLoanTitle"
+									>
+										{{ item.book.title }} (Copy {{ item.copy_no }}) {{ item.barcode }}
+									</li>
+								</ul>
+							</div>
+
+							<div>
+								<Label value="Item ID"/>
+								<Input
+									id="itemInID"
+									class="w-3/4 border-2"
+									maxlength="20"
+									v-model="form1.inventory_item_id"
+									disabled
+								/>
+							</div>
+
+							<div>
+								<Label value="Title"/>
+								<Input
+									id="title"
+									class="w-3/4 border-2"
+									maxlength="20"
+									v-model="form1.itemName"
+									disabled
+								/>
+							</div>
+
+							<div>
+								<Label value="Copy no"/>
+								<Input
+									id="copyNo"
+									class="w-3/4 border-2"
+									maxlength="20"
+									v-model="form1.copyNo"
+									disabled
+								/>
 							</div>
 
 							<div class="mt-2">
@@ -181,6 +379,7 @@
 							</div>
 						</form>
 					</td>
+
 					<td>
 						<h2 class="font-semibold text-xl text-gray-800 leading-tight">
 							Book out
@@ -199,25 +398,65 @@
 								/>
 							</div>
 
-							<div class="mt-1">
-								<!-- <Label value="Borrower"/> -->
-								<select
-									id="borrower_id"
-									v-model="form2.borrower_id"
-									v-on:click="form2.borrowerBarcode = '';"
-									class="w-3/4 border-2"
-									required
+							<div>
+								<button
+									type="button"
+									class="text-xs text-blue-600"
+									v-on:click="noBorrowerBarcode"
 								>
-									<option value="" selected>
-										Barcode missing/damaged?
-									</option>
-									<option v-for="(borrower) in borrowers" :value="borrower.id">
-											{{ '[' + borrower.barcode + '] ' + borrower.name }}
-									</option>
-								</select>
-								<div class="bg-red-200">
-									{{ errors.borrower_id }}
-								</div>
+									No barcode?
+								</button>
+							</div>
+
+							<div v-bind:class="noBorrowerBarcodeClass">
+								<Label value="Search borrower name"/>
+								<Input
+									id="searchBorrowerName"
+									v-model="searchBorrowerName"
+									class="w-3/4 border-2"
+									max-length="100"
+									autocomplete="off"
+								/>
+							</div>
+
+							<div
+								v-if="searchBorrowers.length && (selectedBorrowerName != searchBorrowerName)"
+								class="border border-black p-2 bg-gray-200"
+							>
+								<ul>
+									<li>
+										Showing {{ searchBorrowers.length }} of {{ props.borrowers.length }}
+									</li>
+									<li
+										v-for="borrower in searchBorrowers"
+										v-on:click="selectBorrower(borrower)"
+										v-if="selectedBorrowerName != searchBorrowerName"
+									>
+										{{ borrower.name }} {{ borrower.barcode }}
+									</li>
+								</ul>
+							</div>
+
+							<div>
+								<Label value="Borrower ID"/>
+								<Input
+									id="borrower_id"
+									class="w-3/4 border-2"
+									maxlength="20"
+									v-model="form2.borrower_id"
+									disabled
+								/>
+							</div>
+
+							<div class="mb-10">
+								<Label value="Borrower name"/>
+								<Input
+									id="borrowerName"
+									class="w-3/4 border-2"
+									maxlength="80"
+									v-model="form2.borrowerName"
+									disabled
+								/>
 							</div>
 
 							<div>
@@ -232,9 +471,8 @@
 									v-on:change="readItemOutBarcode()"
 								/>
 							</div>
-
+<!--
 							<div class="mt-1">
-								<!-- <Label value="Book"/> -->
 								<select
 									id="book"
 									v-model="form2.inventory_item_id"
@@ -253,6 +491,78 @@
 								<div class="bg-red-200">
 									{{ errors.inventoryitem_id }}
 								</div>
+							</div>
+-->
+							<div>
+								<button
+									type="button"
+									class="text-xs text-blue-600"
+									v-on:click="noItemOutBarcode"
+								>
+									No barcode?
+								</button>
+							</div>
+
+							<div v-bind:class="noItemOutBarcodeClass">
+								<Label value="Search title"/>
+								<Input
+									id="searchItemOffLoanTitle"
+									v-model="searchItemOffLoanTitle"
+									class="w-3/4 border-2"
+									max-length="100"
+									autocomplete="off"
+								/>
+							</div>
+
+							<div
+								v-if="searchItemsOffLoan.length && (selectedItemOffLoanTitle != searchItemOffLoanTitle)"
+								class="border border-black p-2 bg-gray-200"
+							>
+								<ul>
+									<li>
+										Showing {{ searchItemsOffLoan.length }} of {{ props.inventoryItemsOffLoan.length }}
+									</li>
+									<li
+										v-for="item in searchItemsOffLoan"
+										v-on:click="selectItemOut(item)"
+										v-if="selectedItemOffLoanTitle != searchItemOffLoanTitle"
+									>
+										{{ item.book.title }} (Copy {{ item.copy_no }}) {{ item.barcode }}
+									</li>
+								</ul>
+							</div>
+
+							<div>
+								<Label value="Item ID"/>
+								<Input
+									id="itemOutID"
+									class="w-3/4 border-2"
+									maxlength="20"
+									v-model="form2.inventory_item_id"
+									disabled
+								/>
+							</div>
+
+							<div>
+								<Label value="Title"/>
+								<Input
+									id="itemOutTitle"
+									class="w-3/4 border-2"
+									maxlength="20"
+									v-model="form2.itemName"
+									disabled
+								/>
+							</div>
+
+							<div>
+								<Label value="Copy no"/>
+								<Input
+									id="itemOutCopyNo"
+									class="w-3/4 border-2"
+									maxlength="20"
+									v-model="form2.copyNo"
+									disabled
+								/>
 							</div>
 
 							<div>

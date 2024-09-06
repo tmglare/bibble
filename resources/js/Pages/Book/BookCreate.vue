@@ -42,14 +42,14 @@
 			if (searchAuthorName.value === '') {
 				return [];
 			}
-			return props.authors.filter(
+			return props.authors.filter (
 				author => {
 					if (author.toLowerCase().includes(searchAuthorName.value.toLowerCase())) {
 						return true;
 					}
 					return false;
 				}
-			)
+			);
 		}
 	);
 
