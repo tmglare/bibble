@@ -31952,7 +31952,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8
       /* PROPS */
       , ["errors"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-        onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        onSubmit: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
           $setup.validateAndProcessItemIn();
         }, ["prevent"]))
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Label"], {
@@ -32051,6 +32051,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8
       /* PROPS */
       , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Button"], {
+        type: "button",
+        onClick: _cache[6] || (_cache[6] = function ($event) {
+          $setup.validateAndProcessItemIn();
+        }),
         "class": "text-gray-800 bg-green-400 hover:bg-green-500 active:bg-green-500 focus:bg-green-500 ml-2"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -32062,7 +32066,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       })])], 32
       /* HYDRATE_EVENTS */
       )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-        onSubmit: _cache[20] || (_cache[20] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        onSubmit: _cache[22] || (_cache[22] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
           return $setup.form2.post('/loans?counter=1', {
             preserveState: false
           });
@@ -32078,10 +32082,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "text-transform": "uppercase"
         },
         modelValue: $setup.form2.borrowerBarcode,
-        "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+        "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
           return $setup.form2.borrowerBarcode = $event;
         }),
-        onChange: _cache[8] || (_cache[8] = function ($event) {
+        onChange: _cache[9] || (_cache[9] = function ($event) {
           return $setup.readBorrowerBarcode();
         })
       }, null, 8
@@ -32097,7 +32101,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Input"], {
         id: "searchBorrowerName",
         modelValue: $setup.searchBorrowerName,
-        "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+        "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
           return $setup.searchBorrowerName = $event;
         }),
         "class": "w-3/4 border-2",
@@ -32128,7 +32132,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "w-3/4 border-2",
         maxlength: "20",
         modelValue: $setup.form2.borrower_id,
-        "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+        "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
           return $setup.form2.borrower_id = $event;
         }),
         disabled: ""
@@ -32141,7 +32145,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "w-3/4 border-2",
         maxlength: "80",
         modelValue: $setup.form2.borrowerName,
-        "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
+        "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
           return $setup.form2.borrowerName = $event;
         }),
         disabled: ""
@@ -32158,10 +32162,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "text-transform": "uppercase"
         },
         modelValue: $setup.form2.itemBarcode,
-        "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+        "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
           return $setup.form2.itemBarcode = $event;
         }),
-        onChange: _cache[13] || (_cache[13] = function ($event) {
+        onChange: _cache[14] || (_cache[14] = function ($event) {
           return $setup.readItemOutBarcode();
         })
       }, null, 8
@@ -32177,7 +32181,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Input"], {
         id: "searchItemOffLoanTitle",
         modelValue: $setup.searchItemOffLoanTitle,
-        "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+        "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
           return $setup.searchItemOffLoanTitle = $event;
         }),
         "class": "w-3/4 border-2",
@@ -32208,7 +32212,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "w-3/4 border-2",
         maxlength: "20",
         modelValue: $setup.form2.inventory_item_id,
-        "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+        "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
           return $setup.form2.inventory_item_id = $event;
         }),
         disabled: ""
@@ -32221,7 +32225,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "w-3/4 border-2",
         maxlength: "20",
         modelValue: $setup.form2.itemName,
-        "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+        "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
           return $setup.form2.itemName = $event;
         }),
         disabled: ""
@@ -32234,7 +32238,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "w-3/4 border-2",
         maxlength: "20",
         modelValue: $setup.form2.copyNo,
-        "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
+        "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
           return $setup.form2.copyNo = $event;
         }),
         disabled: ""
@@ -32246,7 +32250,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         id: "borrowedOn",
         modelValue: $setup.form2.borrowed_on,
-        "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
+        "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
           return $setup.form2.borrowed_on = $event;
         }),
         "class": "w-3/4 border-2",
@@ -32261,7 +32265,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         id: "dueBack",
         modelValue: $setup.form2.due_back,
-        "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
+        "onUpdate:modelValue": _cache[20] || (_cache[20] = function ($event) {
           return $setup.form2.due_back = $event;
         }),
         "class": "w-3/4 border-2",
@@ -32271,7 +32275,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.due_back), 1
       /* TEXT */
       )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Button"], {
-        "class": "text-gray-800 bg-green-400 hover:bg-green-500 active:bg-green-500 focus:bg-green-500 ml-2"
+        type: "button",
+        "class": "text-gray-800 bg-green-400 hover:bg-green-500 active:bg-green-500 focus:bg-green-500 ml-2",
+        onClick: _cache[21] || (_cache[21] = function ($event) {
+          return $setup.form2.post('/loans?counter=1', {
+            preserveState: false
+          });
+        })
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_22];

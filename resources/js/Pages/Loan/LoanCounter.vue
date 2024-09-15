@@ -373,7 +373,11 @@
 							</div>
 
 							<div class="mt-2">
-								<Button class="text-gray-800 bg-green-400 hover:bg-green-500  active:bg-green-500  focus:bg-green-500 ml-2">
+								<Button
+									type="button"
+									v-on:click="validateAndProcessItemIn();"
+									class="text-gray-800 bg-green-400 hover:bg-green-500  active:bg-green-500  focus:bg-green-500 ml-2"
+								>
 									Return now
 								</Button>
 							</div>
@@ -594,7 +598,11 @@
 							</div>
 
 							<div class="mt-2">
-								<Button class="text-gray-800 bg-green-400 hover:bg-green-500  active:bg-green-500  focus:bg-green-500 ml-2">
+								<Button
+									type="button"
+									class="text-gray-800 bg-green-400 hover:bg-green-500  active:bg-green-500  focus:bg-green-500 ml-2"
+									v-on:click="form2.post('/loans?counter=1',{ preserveState: false })"
+								>
 									Book out now
 								</Button>
 							</div>

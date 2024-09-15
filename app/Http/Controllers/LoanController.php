@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Mail\SentMessage;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 
 use App\Models\Book;
 use App\Models\Loan;
@@ -150,6 +151,24 @@ class LoanController extends Controller {
 				"borrowed_on"       => "required",
 				"due_back"          => "required"
 			)
+		);
+
+		$inventoryItemId = $request->input("inventory_item_id");
+
+		$this->validate(
+			$request,
+			array(
+				"inventory_item_id" => array(
+					Rule::unique("loans")->where(
+						function ($query) use ($inventoryItemId) {
+							return $query->
+								where("inventory_item_id",$inventoryItemId)->
+								whereNull("returned_on");
+						}
+					)
+				)
+			),
+			[ "inventory_item_id" => __("Item has already been booked out!") ]
 		);
 
 		$data = $request->all();
