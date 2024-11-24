@@ -37,6 +37,16 @@
 	const reinstateRecord = (id) => {
 		Inertia.get(`/books/${id}/reinstate`);
 	}
+
+	const searchTitle = ref("");
+	const searchAuthor = ref("");
+
+	const search = () => {
+		Inertia.get("/books",{
+			searchTitle: searchTitle.value,
+			searchAuthor: searchAuthor.value
+		});
+	}
 </script>
 
 <template>
@@ -51,6 +61,10 @@
 	<div class="flex flex-col justify-center items-left pt-6 px-6 sm:pt-0 bg-gray-100">
 		<Errors v-bind:errors="errors"></Errors>
 		<div class="w-full mt-6 px-6 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+
+			<form id="searchform" v-on:submit.prevent="search">
+			</form>
+
 			<div class="mt-4 mb-2 p-2" style="outline: 2px solid #888888">
 				<table class="w-full">
 					<tr>
@@ -69,6 +83,35 @@
 							Category <ColumnSort url="books" columnName="detailedCategory.name"></ColumnSort>
 						</th>
 						<th class="text-left text-gray-600">Copies</th>
+					</tr>
+					<tr>
+						<th class="text-left">
+							<button type="submit" form="searchform" class="my-2 px-2 rounded bg-blue-200">Search</button>
+						</th>
+						<th>
+						</th>
+						<th>
+						</th>
+						<th>
+							<Input
+								id="searchTitle"
+								v-model="searchTitle"
+								class="w-full border-2 my-2"
+								autocomplete="off"
+							/>
+						</th>
+						<th>
+						</th>
+						<th>
+							<Input
+								id="searchAuthor"
+								v-model="searchAuthor"
+								class="w-full border-2 my-2"
+								autocomplete="off"
+							/>
+						</th>
+						<th colspan="3">
+						</th>
 					</tr>
 					<tr
 						v-for="(book,key) in books.data"

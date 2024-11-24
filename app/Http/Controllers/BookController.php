@@ -23,6 +23,13 @@ class BookController extends Controller {
 	public function index(Request $request) {
 		$columnName = $request->input("columnName");
 		$direction  = $request->input("direction");
+		$searchTitle = $request->input("searchTitle");
+		$searchAuthor = $request->input("searchAuthor");
+
+		if (! $searchTitle) { $searchTitle = ""; }
+		$searchTitle = "$searchTitle%";
+		if (! $searchAuthor) { $searchAuthor = ""; }
+		$searchAuthor = "$searchAuthor%";
 
 		if (! $direction) { $direction = "asc"; }
 
@@ -35,6 +42,13 @@ class BookController extends Controller {
 		if ($sortColumn == "detailedCategory.name") {
 			$books = tap(
 				$this->book->withTrashed()->with("detailedCategory","author")
+					->where("title","LIKE",$searchTitle)
+					->whereHas(
+						"author",
+						function($query) use ($searchAuthor) {
+							$query->where("ordered_name","LIKE",$searchAuthor);
+						}
+					)
 					->orderBy(
 						DetailedCategory::select('name')
             ->whereColumn('id', 'books.detailed_category_id')
@@ -52,6 +66,13 @@ class BookController extends Controller {
 		} elseif ($sortColumn == "author.ordered_name") {
 			$books = tap(
 				$this->book->withTrashed()->with("detailedCategory","author")
+					->where("title","LIKE",$searchTitle)
+					->whereHas(
+						"author",
+						function($query) use ($searchAuthor) {
+							$query->where("ordered_name","LIKE",$searchAuthor);
+						}
+					)
 					->orderBy(
 						Author::select('ordered_name')
             ->whereColumn('id', 'books.author_id')
@@ -71,6 +92,13 @@ class BookController extends Controller {
 		} else {
 			$books = tap(
 				$this->book->withTrashed()->with("detailedCategory","author")
+					->where("title","LIKE",$searchTitle)
+					->whereHas(
+						"author",
+						function($query) use ($searchAuthor) {
+							$query->where("ordered_name","LIKE",$searchAuthor);
+						}
+					)
 					->orderBy(
 						"title",$direction
 					)
