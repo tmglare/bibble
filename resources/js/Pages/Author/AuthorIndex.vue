@@ -37,6 +37,14 @@
 	const reinstateRecord = (id) => {
 		Inertia.get(`/authors/${id}/reinstate`);
 	}
+
+	const searchOrderedName = ref("");
+
+	const search = () => {
+		Inertia.get("/authors",{
+			searchOrderedName: searchOrderedName.value
+		});
+	}
 </script>
 
 <template>
@@ -55,6 +63,8 @@
 		<div class="flex flex-col justify-center items-left pt-6 pl-6 sm:pt-0 bg-gray-100">
 			<Errors v-bind:errors="errors"></Errors>
 			<div class="w-3/4 mt-6 px-6 pb-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+				<form id="searchform" v-on:submit.prevent="search">
+				</form>
 				<div class="mt-4 mb-2 p-2" style="outline: 2px solid #888888">
 					<table class="w-full">
 						<tr>
@@ -68,6 +78,27 @@
 								Name (surname first) <ColumnSort url="authors" columnName="ordered_name"></ColumnSort>
 							</th>
 						</tr>
+
+						<tr>
+							<th class="text-left">
+								<button type="submit" form="searchform" class="my-2 px-2 rounded bg-blue-200">Search</button>
+							</th>
+							<th>
+							</th>
+							<th>
+							</th>
+							<th>
+							</th>
+							<th>
+								<Input
+									id="searchOrderedName"
+									v-model="searchOrderedName"
+									class="w-full border-2 my-2"
+									autocomplete="off"
+								/>
+							</th>
+						</tr>
+
 						<tr
 							v-for="(author,key) in authors.data"
 							v-bind:class="archived(`${author.deleted_at}`)"

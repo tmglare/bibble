@@ -18,6 +18,11 @@ class AuthorController extends Controller {
 	* @return \Illuminate\Http\Response
 	*/
 	public function index(Request $request) {
+		$searchOrderedName = $request->input("searchOrderedName");
+
+		if (! $searchOrderedName) { $searchOrderedName = ""; }
+		$searchOrderedName = "$searchOrderedName%";
+
 		$columnName = $request->input("columnName");
 		$direction  = $request->input("direction");
 
@@ -29,7 +34,11 @@ class AuthorController extends Controller {
 			$sortColumn = "ordered_name";
 		}
 
-		$authors = $this->author->withTrashed()->orderBy($sortColumn,$direction)->paginate(10)->withQueryString();
+		$authors = $this->author->withTrashed()->
+			where("ordered_name","LIKE",$searchOrderedName)->
+			orderBy($sortColumn,$direction)->
+			paginate(10)->
+			withQueryString();
 
 		return Inertia::render(
 			"Author/AuthorIndex",
